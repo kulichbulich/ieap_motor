@@ -10,8 +10,11 @@ Motor module (KiCAD files): https://www.analog.com/media/en/evaluation-documenta
 
 ### DC/DC converter
 LT8610: https://www.analog.com/media/en/technical-documentation/data-sheets/lt8610.pdf
++5V Power supply
 ![image +5V](./pictures/LT8610AC_5V.png)
++5V Power supply
 ![image +3V3](./pictures/LT8610AC_3V3.png)
+
 
 ### Polyswitch
 https://cz.mouser.com/ProductDetail/Littelfuse/MINISMDC150F-24-2?qs=F6FIpiMdEVZ%2Fp37J%2FDHAxA%3D%3D
