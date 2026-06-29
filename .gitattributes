@@ -1,0 +1,6 @@
+*.kicad_pcb -text
+*.kicad_sch -text
+*.kicad_pro -text
+*.kicad_prl -text
+*.kicad_sym -text
+*.kicad_mod -text
