@@ -1607,7 +1607,7 @@
 			)
 		)
 		(instances
-			(project "Stargate_Stepper"
+			(project "esp32stepper"
 				(path "/29a68080-a031-4f05-96b8-20ecd97fb7f6"
 					(page "4")
 				)
@@ -1739,7 +1739,7 @@
 			)
 		)
 		(instances
-			(project "Stargate_Stepper"
+			(project "esp32stepper"
 				(path "/29a68080-a031-4f05-96b8-20ecd97fb7f6"
 					(page "8")
 				)
@@ -1871,7 +1871,7 @@
 			)
 		)
 		(instances
-			(project "Stargate_Stepper"
+			(project "esp32stepper"
 				(path "/29a68080-a031-4f05-96b8-20ecd97fb7f6"
 					(page "7")
 				)
@@ -1913,7 +1913,7 @@
 			)
 		)
 		(instances
-			(project "Stargate_Stepper"
+			(project "esp32stepper"
 				(path "/29a68080-a031-4f05-96b8-20ecd97fb7f6"
 					(page "5")
 				)
@@ -1955,7 +1955,7 @@
 			)
 		)
 		(instances
-			(project "Stargate_Stepper"
+			(project "esp32stepper"
 				(path "/29a68080-a031-4f05-96b8-20ecd97fb7f6"
 					(page "2")
 				)
@@ -1997,7 +1997,7 @@
 			)
 		)
 		(instances
-			(project "Stargate_Stepper"
+			(project "esp32stepper"
 				(path "/29a68080-a031-4f05-96b8-20ecd97fb7f6"
 					(page "3")
 				)
@@ -2129,7 +2129,7 @@
 			)
 		)
 		(instances
-			(project "Stargate_Stepper"
+			(project "esp32stepper"
 				(path "/29a68080-a031-4f05-96b8-20ecd97fb7f6"
 					(page "6")
 				)
