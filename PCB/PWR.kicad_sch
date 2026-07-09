@@ -2146,21 +2146,17 @@
 		)
 		(uuid "a7b2b0d9-339b-4f39-a5e7-38bfda172b85")
 	)
-	(text "powered via usb for flashing or only via power source?\n\npower source, no point to have separate ldo \nthat turns on only when 24v not present and 5v present\n"
-		(exclude_from_sim no)
-		(at 49.53 82.042 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "e75e1093-8913-4921-b0a4-36ff51e93873")
-	)
 	(junction
 		(at 158.75 55.88)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "0c049c28-6ae9-41af-87ad-1696e360c32a")
+	)
+	(junction
+		(at 43.18 39.37)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "15ea64d7-fdbf-4703-b763-2206cca03ac3")
 	)
 	(junction
 		(at 222.25 63.5)
@@ -2552,16 +2548,6 @@
 	)
 	(wire
 		(pts
-			(xy 25.4 46.99) (xy 25.4 44.45)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "89f9bead-2c1a-4b14-90dd-e87c3d84d1dd")
-	)
-	(wire
-		(pts
 			(xy 146.05 76.2) (xy 146.05 73.66)
 		)
 		(stroke
@@ -2619,6 +2605,16 @@
 			(type default)
 		)
 		(uuid "9a7efbe2-27a2-4e72-971b-cd0c4277917f")
+	)
+	(wire
+		(pts
+			(xy 25.4 44.45) (xy 25.4 39.37)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9c4ae382-0983-486e-9744-8532c266811b")
 	)
 	(wire
 		(pts
@@ -2689,6 +2685,16 @@
 			(type default)
 		)
 		(uuid "bb09f871-8d13-415f-b8ae-35871de682fc")
+	)
+	(wire
+		(pts
+			(xy 25.4 39.37) (xy 43.18 39.37)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "be1b14b4-1d98-4e18-9caf-fdc59c9ba516")
 	)
 	(wire
 		(pts
@@ -2866,28 +2872,6 @@
 	)
 	(global_label "24Vin"
 		(shape input)
-		(at 25.4 46.99 270)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "a6ce562d-f67b-4031-add3-45e6caedd0ee")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 25.4 55.2366 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-	)
-	(global_label "24Vin"
-		(shape input)
 		(at 43.18 38.1 90)
 		(fields_autoplaced yes)
 		(effects
@@ -2988,7 +2972,7 @@
 		(dnp no)
 		(uuid "0c260586-7949-4afe-81bb-165ec03f38e5")
 		(property "Reference" "C15"
-			(at 159.766 65.786 0)
+			(at 160.02 61.214 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2997,7 +2981,7 @@
 			)
 		)
 		(property "Value" "470n"
-			(at 160.528 61.468 0)
+			(at 160.782 65.786 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3005,7 +2989,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0201_0603Metric_Pad0.64x0.40mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
 			(at 153.9748 59.69 0)
 			(effects
 				(font
@@ -3197,7 +3181,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 178.562 57.404 90)
+			(at 179.07 57.404 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3648,7 +3632,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "VNfootprints:polyfuse"
 			(at 57.15 148.26 0)
 			(effects
 				(font
@@ -3767,7 +3751,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0201_0603Metric_Pad0.64x0.40mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
 			(at 175.26 59.9948 0)
 			(effects
 				(font
@@ -3819,7 +3803,7 @@
 		(dnp no)
 		(uuid "6a093d40-89b0-436d-8003-e0eb55c9d6f9")
 		(property "Reference" "C11"
-			(at 208.28 52.324 90)
+			(at 209.296 50.8 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3834,7 +3818,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0201_0603Metric_Pad0.64x0.40mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
 			(at 212.09 57.4548 0)
 			(effects
 				(font
@@ -4041,7 +4025,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0201_0603Metric_Pad0.64x0.40mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder"
 			(at 177.4952 46.99 0)
 			(effects
 				(font
@@ -4160,22 +4144,22 @@
 		(dnp no)
 		(uuid "7ba16855-0f3a-4f5b-83f6-ed2a221cae8f")
 		(property "Reference" "L2"
-			(at 215.9 59.69 90)
+			(at 215.646 49.784 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Value" "SPM3012T-4R7M-LR"
-			(at 215.646 44.196 90)
+		(property "Value" "SPM3012T-1R5M-LR"
+			(at 214.884 47.498 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "VNfootprints:SPM3010-3020"
 			(at 215.9 58.42 0)
 			(effects
 				(font
@@ -4368,7 +4352,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "IRF4905"
+		(property "Value" "IRF4905STRLPBF"
 			(at 46.99 45.7199 0)
 			(effects
 				(font
@@ -4377,7 +4361,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Package_TO_SOT_SMD:TO-263-2"
 			(at 45.72 41.91 0)
 			(effects
 				(font
@@ -4457,10 +4441,9 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "99993ea6-2ad9-4b9f-855c-c469c26442df")
 		(property "Reference" "R12"
-			(at 148.59 59.6899 0)
+			(at 147.32 59.69 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4468,8 +4451,8 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R"
-			(at 148.59 62.2299 0)
+		(property "Value" "160"
+			(at 147.32 62.23 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4595,7 +4578,7 @@
 		(dnp no)
 		(uuid "a144e360-d981-4082-b748-3da93d953a06")
 		(property "Reference" "C12"
-			(at 214.376 68.834 90)
+			(at 214.884 72.898 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4604,7 +4587,7 @@
 			)
 		)
 		(property "Value" "4p7"
-			(at 219.456 71.374 90)
+			(at 219.71 71.882 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4612,7 +4595,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0201_0603Metric_Pad0.64x0.40mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
 			(at 214.63 70.8152 0)
 			(effects
 				(font
@@ -4796,7 +4779,7 @@
 		(dnp no)
 		(uuid "b0f436cf-f9fc-410b-8fc5-63f185c1934d")
 		(property "Reference" "C13"
-			(at 225.298 52.07 90)
+			(at 226.06 50.038 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4804,14 +4787,14 @@
 			)
 		)
 		(property "Value" "1u"
-			(at 231.902 52.07 90)
+			(at 230.378 50.038 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0201_0603Metric_Pad0.64x0.40mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
 			(at 227.6348 48.26 0)
 			(effects
 				(font
@@ -4863,7 +4846,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "b120d6f2-3ff3-44fd-a975-3518aaa4d908")
-		(property "Reference" "TVS1"
+		(property "Reference" "TVS0"
 			(at 71.12 57.1499 90)
 			(effects
 				(font
@@ -4872,7 +4855,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "PTVS5V0Z1USK"
+		(property "Value" "TSM24ADBZR"
 			(at 71.12 59.6899 90)
 			(effects
 				(font
@@ -4881,7 +4864,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Diode_SMD:Nexperia_DSN1608-2_1.6x0.8mm"
+		(property "Footprint" "Package_TO_SOT_SMD:TSOT-23"
 			(at 64.135 58.42 0)
 			(effects
 				(font
@@ -4890,7 +4873,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/PTVS5V0Z1USK.pdf"
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/tsm24a-q1.pdf?ts=1783418861293"
 			(at 68.58 58.42 0)
 			(effects
 				(font
@@ -4899,7 +4882,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "5V, 1200W TVS unidirectional diode, DSN1608-2"
+		(property "Description" "24V working, 38V clamp, 75nA leakage @ 24V"
 			(at 68.58 58.42 0)
 			(effects
 				(font
@@ -4917,7 +4900,7 @@
 		(instances
 			(project ""
 				(path "/29a68080-a031-4f05-96b8-20ecd97fb7f6/af86f007-a426-49d5-88df-f35545519537"
-					(reference "TVS1")
+					(reference "TVS0")
 					(unit 1)
 				)
 			)
@@ -5198,25 +5181,24 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "cd25b8c0-a192-4523-a239-aaa1d9f565dd")
 		(property "Reference" "D3"
-			(at 30.48 38.1 0)
+			(at 27.686 45.974 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Value" "9v zener"
-			(at 30.48 40.64 0)
+		(property "Value" "BZX84B9V1"
+			(at 27.432 48.26 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Package_TO_SOT_SMD:SOT-23"
 			(at 30.48 44.45 0)
 			(effects
 				(font
@@ -5338,7 +5320,7 @@
 		(dnp no)
 		(uuid "dc6d9bbf-73da-4c87-ba07-a02e7ab8e45f")
 		(property "Reference" "LED1"
-			(at 139.7 68.58 90)
+			(at 134.62 69.342 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5346,8 +5328,8 @@
 				(justify right)
 			)
 		)
-		(property "Value" "Red"
-			(at 140.462 70.866 90)
+		(property "Value" "LTST-C170KRKT"
+			(at 129.032 72.136 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5481,7 +5463,7 @@
 		(dnp no)
 		(uuid "f0e771d5-6090-420b-aeec-02d44aa6df31")
 		(property "Reference" "C14"
-			(at 231.394 64.516 0)
+			(at 231.14 61.214 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5490,7 +5472,7 @@
 			)
 		)
 		(property "Value" "47u"
-			(at 231.394 67.056 0)
+			(at 231.14 63.754 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5498,7 +5480,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0201_0603Metric_Pad0.64x0.40mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
 			(at 229.5652 66.04 0)
 			(effects
 				(font
@@ -5567,7 +5549,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0201_0603Metric_Pad0.64x0.40mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
 			(at 190.1952 46.99 0)
 			(effects
 				(font

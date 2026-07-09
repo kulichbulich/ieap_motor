@@ -4,3 +4,4 @@
 *.kicad_prl -text
 *.kicad_sym -text
 *.kicad_mod -text
+*.csv -text
