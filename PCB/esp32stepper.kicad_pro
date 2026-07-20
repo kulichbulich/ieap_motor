@@ -66,7 +66,7 @@
           "pad_connection": 1,
           "remove_islands": 0,
           "thermal_relief_gap": 0.5,
-          "thermal_relief_spoke_width": 0.5
+          "thermal_relief_spoke_width": 1.2
         }
       },
       "diff_pair_dimensions": [
@@ -594,7 +594,7 @@
       "gencad": "",
       "idf": "",
       "netlist": "",
-      "plot": "Export/",
+      "plot": "Export_v1.1/",
       "pos_files": "",
       "specctra_dsn": "",
       "step": "",
@@ -867,7 +867,7 @@
         "uuid": "29a68080-a031-4f05-96b8-20ecd97fb7f6"
       }
     ],
-    "used_designators": "R43-45,F1,F3-6,Q1,fan1,#PWR87-92,NPN1,SW1,J2,J6",
+    "used_designators": "H1-8,R43-45,F1,F3-6,Q1,fan1,#PWR87-92,NPN1,SW1,J2,J6",
     "variants": []
   },
   "sheets": [
