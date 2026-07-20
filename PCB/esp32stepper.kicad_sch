@@ -313,6 +313,16 @@
 	)
 	(wire
 		(pts
+			(xy 66.04 68.58) (xy 68.58 68.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "00bc17cd-386b-4b5d-99d1-8c5ec269b062")
+	)
+	(wire
+		(pts
 			(xy 66.04 151.13) (xy 67.31 151.13)
 		)
 		(stroke
@@ -403,6 +413,16 @@
 	)
 	(wire
 		(pts
+			(xy 66.04 34.29) (xy 68.58 34.29)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "34a887cd-f1af-4cda-9fc5-06ec5bce83ee")
+	)
+	(wire
+		(pts
 			(xy 38.1 78.74) (xy 39.37 78.74)
 		)
 		(stroke
@@ -480,6 +500,16 @@
 			(type default)
 		)
 		(uuid "64f78811-9bb8-4e46-ac1f-8d5f5aa1bfc7")
+	)
+	(wire
+		(pts
+			(xy 66.04 102.87) (xy 68.58 102.87)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6527c991-0eac-42c2-848f-37d3779b3770")
 	)
 	(wire
 		(pts
@@ -673,6 +703,16 @@
 	)
 	(wire
 		(pts
+			(xy 66.04 137.16) (xy 68.58 137.16)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f816fb49-cd5c-471e-86ae-028495c37d08")
+	)
+	(wire
+		(pts
 			(xy 38.1 113.03) (xy 39.37 113.03)
 		)
 		(stroke
@@ -766,6 +806,30 @@
 		(uuid "227f7fe9-9979-49fc-927b-13833ce08e63")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 77.9756 143.51 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+	)
+	(global_label "24V_Motor"
+		(shape input)
+		(at 68.58 68.58 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "2ef26664-e1a8-45a9-bda8-8b5e1baad903")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 81.3017 68.58 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -982,6 +1046,30 @@
 		(uuid "71bc94b5-4b78-48a6-aa99-dbbdccceead2")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 78.157 77.47 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+	)
+	(global_label "24V_Motor"
+		(shape input)
+		(at 68.58 137.16 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "79122866-ba93-4a29-bb74-646ec78c634e")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 81.3017 137.16 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1305,6 +1393,30 @@
 			)
 		)
 	)
+	(global_label "24V_Motor"
+		(shape input)
+		(at 68.58 102.87 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "ec1ca6b2-98a0-4fab-a633-f2f09a56105b")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 81.3017 102.87 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+	)
 	(global_label "mot2.A1"
 		(shape output)
 		(at 67.31 109.22 0)
@@ -1318,6 +1430,30 @@
 		(uuid "f20adda3-ccbd-4d39-946a-58bcb7580cc9")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 77.9756 109.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+	)
+	(global_label "24V_Motor"
+		(shape input)
+		(at 68.58 34.29 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "f92c703a-3f65-47b7-a6bf-48c79669eef4")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 81.3017 34.29 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2031,6 +2167,16 @@
 				(justify left)
 			)
 		)
+		(pin "MOT_POWER" input
+			(at 66.04 34.29 0)
+			(uuid "ac8b82f2-c613-491d-88a3-b30887567bd9")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
 		(instances
 			(project "esp32stepper"
 				(path "/29a68080-a031-4f05-96b8-20ecd97fb7f6"
@@ -2167,6 +2313,16 @@
 				(justify left)
 			)
 		)
+		(pin "MOT_POWER" input
+			(at 66.04 137.16 0)
+			(uuid "a7332b54-9023-4ce3-b210-ce6900a44248")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
 		(instances
 			(project "esp32stepper"
 				(path "/29a68080-a031-4f05-96b8-20ecd97fb7f6"
@@ -2301,6 +2457,16 @@
 					(size 1.27 1.27)
 				)
 				(justify left)
+			)
+		)
+		(pin "MOT_POWER" input
+			(at 66.04 102.87 0)
+			(uuid "570f31dc-bf95-414f-acb6-68dd2ceda8e5")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
 			)
 		)
 		(instances
@@ -2575,6 +2741,16 @@
 					(size 1.27 1.27)
 				)
 				(justify left)
+			)
+		)
+		(pin "MOT_POWER" input
+			(at 66.04 68.58 0)
+			(uuid "4743d3ad-25b3-4b1f-afad-616286ab73eb")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
 			)
 		)
 		(instances

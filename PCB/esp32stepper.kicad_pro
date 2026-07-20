@@ -86,10 +86,6 @@
           ""
         ],
         [
-          "courtyards_overlap|173210000|105615000|7c692463-7f9b-4a87-9527-5611ce271fd9|945769e7-4f76-43a5-916e-21c4b0154305",
-          ""
-        ],
-        [
           "courtyards_overlap|183117614|105465000|308dfdbf-f953-4888-b9dc-b65ff2e3c09a|47938022-3bd5-45c4-a096-acf669f21f32",
           ""
         ],
@@ -98,19 +94,7 @@
           ""
         ],
         [
-          "courtyards_overlap|195210000|105515000|47938022-3bd5-45c4-a096-acf669f21f32|b9697096-6fe7-45f2-8fa2-26017a647798",
-          ""
-        ],
-        [
           "courtyards_overlap|208848884|105365000|04fc4311-33b3-428f-a016-df9724685dd5|ac703c4c-cdb4-4409-9096-48dc4c75858a",
-          ""
-        ],
-        [
-          "courtyards_overlap|210490000|105595000|04fc4311-33b3-428f-a016-df9724685dd5|5f80b3e3-3946-486d-aa4e-71195d738593",
-          ""
-        ],
-        [
-          "courtyards_overlap|220910000|105315000|04fc4311-33b3-428f-a016-df9724685dd5|5013d44b-f937-4450-8b98-33e1b775a8c6",
           ""
         ],
         [
@@ -119,66 +103,6 @@
         ],
         [
           "courtyards_overlap|232290000|105895000|07de63de-75f9-43ce-8e13-166ed47776cf|c699d3d2-450c-4293-85d1-fb793940caf5",
-          ""
-        ],
-        [
-          "courtyards_overlap|242710000|105315000|c699d3d2-450c-4293-85d1-fb793940caf5|ef90dc63-10d2-4cc7-a3a6-49d741d36647",
-          ""
-        ],
-        [
-          "solder_mask_bridge|246725000|156540000|fff25b52-9ac6-4b68-a77a-bb36134fa3f3|00d6a05a-29a4-41c6-8798-badc637c8a28",
-          ""
-        ],
-        [
-          "solder_mask_bridge|246725000|157390000|00d6a05a-29a4-41c6-8798-badc637c8a28|d288e1c0-4404-4020-8645-f5a15a728e6d",
-          ""
-        ],
-        [
-          "solder_mask_bridge|246725000|158240000|d288e1c0-4404-4020-8645-f5a15a728e6d|906abf10-2401-4879-b7b5-a1bce6ae2443",
-          ""
-        ],
-        [
-          "solder_mask_bridge|246725000|159090000|906abf10-2401-4879-b7b5-a1bce6ae2443|d0936927-6a54-4699-bdaa-500446ba9cbd",
-          ""
-        ],
-        [
-          "solder_mask_bridge|246725000|159940000|d0936927-6a54-4699-bdaa-500446ba9cbd|0c86d7c6-2c54-4384-96bb-d03ee8b1a45a",
-          ""
-        ],
-        [
-          "solder_mask_bridge|246725000|160790000|0c86d7c6-2c54-4384-96bb-d03ee8b1a45a|bc02b536-8f63-4cf6-9f31-a59b1519cbed",
-          ""
-        ],
-        [
-          "solder_mask_bridge|246725000|161640000|bc02b536-8f63-4cf6-9f31-a59b1519cbed|3855d9b5-2061-4640-9068-6443e6457f11",
-          ""
-        ],
-        [
-          "solder_mask_bridge|248075000|156540000|fcfaa2c4-6f98-4218-ae7c-73466bf994df|ca812904-17fe-4965-849b-b8dbb58c0886",
-          ""
-        ],
-        [
-          "solder_mask_bridge|248075000|157390000|324f22bb-ec9d-4299-a4d9-2b7d121f6035|fcfaa2c4-6f98-4218-ae7c-73466bf994df",
-          ""
-        ],
-        [
-          "solder_mask_bridge|248075000|158240000|1e1a2c83-c941-499e-9d4d-826b5baabb2d|324f22bb-ec9d-4299-a4d9-2b7d121f6035",
-          ""
-        ],
-        [
-          "solder_mask_bridge|248075000|159090000|3538815a-f782-453d-9e93-c027b031ead1|1e1a2c83-c941-499e-9d4d-826b5baabb2d",
-          ""
-        ],
-        [
-          "solder_mask_bridge|248075000|159940000|20981569-6dc9-451c-aef2-d54391bcda21|3538815a-f782-453d-9e93-c027b031ead1",
-          ""
-        ],
-        [
-          "solder_mask_bridge|248075000|160790000|27c32540-52e5-4955-9aa4-05c959f4e714|20981569-6dc9-451c-aef2-d54391bcda21",
-          ""
-        ],
-        [
-          "solder_mask_bridge|248075000|161640000|fca03f0b-aed3-4f75-8a9f-5c2b2b9bdc81|27c32540-52e5-4955-9aa4-05c959f4e714",
           ""
         ],
         [
@@ -329,9 +253,11 @@
       "track_widths": [
         0.0,
         0.2,
+        0.3,
         0.5,
         0.8,
-        1.2
+        1.2,
+        2.0
       ],
       "tuning_pattern_settings": {
         "diff_pair_defaults": {
@@ -363,6 +289,14 @@
         {
           "diameter": 0.0,
           "drill": 0.0
+        },
+        {
+          "diameter": 0.6,
+          "drill": 0.3
+        },
+        {
+          "diameter": 2.0,
+          "drill": 1.0
         }
       ],
       "zones_allow_external_fillets": false
@@ -660,7 +594,7 @@
       "gencad": "",
       "idf": "",
       "netlist": "",
-      "plot": "",
+      "plot": "Export/",
       "pos_files": "",
       "specctra_dsn": "",
       "step": "",
@@ -933,7 +867,7 @@
         "uuid": "29a68080-a031-4f05-96b8-20ecd97fb7f6"
       }
     ],
-    "used_designators": "Q1,#PWR87-88,NPN1,SW1,J2,J6,fan1",
+    "used_designators": "R43-45,F1,F3-6,Q1,fan1,#PWR87-92,NPN1,SW1,J2,J6",
     "variants": []
   },
   "sheets": [

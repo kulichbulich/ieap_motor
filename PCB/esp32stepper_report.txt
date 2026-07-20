@@ -1,0 +1,72 @@
+PCB statistics report
+=====================
+- Date: Ne 19. července 2026, 21:08:01
+- Project: esp32stepper
+- Board name: esp32stepper
+
+Board
+-----
+- Width: 100,0000 mm
+- Height: 80,0000 mm
+- Area: 8000,00 mm²
+- Front copper area: 3148,227 mm²
+- Back copper area: 1132,321 mm²
+- Min track clearance: 0,2000 mm
+- Min track width: 0,2000 mm
+- Min drill diameter: 0,3000 mm
+- Board stackup thickness: 1,6000 mm
+
+- Front footprint area: 5329,225 mm²
+- Back footprint area: 617,64 mm²
+- Front component density: 66,62 %
+- Back component density: 7,72 %
+Pads
+----
+- Through hole: 186
+- SMD: 324
+- Connector: 8
+- NPTH: 5
+- Castellated: 0
+- Press-fit: 0
+
+Vias
+----
+- Through vias: 106
+- Blind vias: 0
+- Buried vias: 0
+- Micro vias: 0
+
+Components
+----------
+
+|              | Front Side | Back Side | Total |
+|--------------|------------|-----------|-------|
+|THT:          |         16 |         0 |    16 |
+|SMD:          |        107 |         0 |   107 |
+|Unspecified:  |         18 |         0 |    18 |
+|Total:        |        141 |         0 |   141 |
+
+Drill holes
+-----------
+
+| Count | Shape |    X Size |    Y Size | Plated | Via/Pad | Start Layer | Stop Layer |
+|-------|-------|-----------|-----------|--------|---------|-------------|------------|
+|    98 | Round | 0,3000 mm | 0,3000 mm |    PTH |     Via |        F.Cu |       B.Cu |
+|    83 | Round | 1,0000 mm | 1,0000 mm |    PTH |     Pad |        F.Cu |       B.Cu |
+|    40 | Round | 0,9500 mm | 0,9500 mm |    PTH |     Pad |        F.Cu |       B.Cu |
+|    32 | Round | 0,3000 mm | 0,3000 mm |    PTH |     Pad |        F.Cu |       B.Cu |
+|    16 | Round | 0,4000 mm | 0,4000 mm |    PTH |     Pad |        F.Cu |       B.Cu |
+|     4 | Round | 1,0000 mm | 1,0000 mm |    PTH |     Via |        F.Cu |       B.Cu |
+|     4 | Round | 3,2000 mm | 3,2000 mm |    PTH |     Pad |        F.Cu |       B.Cu |
+|     4 | Round | 1,2000 mm | 1,2000 mm |   NPTH |     Pad |        F.Cu |       B.Cu |
+|     2 |  Slot | 1,0000 mm | 2,5000 mm |    PTH |     Pad |        F.Cu |       B.Cu |
+|     2 |  Slot | 0,6000 mm | 1,4000 mm |    PTH |     Pad |        F.Cu |       B.Cu |
+|     2 |  Slot | 0,6000 mm | 2,1000 mm |    PTH |     Pad |        F.Cu |       B.Cu |
+|     2 | Round | 0,6000 mm | 0,6000 mm |    PTH |     Via |        F.Cu |       B.Cu |
+|     2 | Round | 0,5000 mm | 0,5000 mm |    PTH |     Via |        F.Cu |       B.Cu |
+|     1 | Round | 1,6000 mm | 1,6000 mm |   NPTH |     Pad |        F.Cu |       B.Cu |
+|     1 |  Slot | 3,0000 mm | 1,0000 mm |    PTH |     Pad |        F.Cu |       B.Cu |
+|     1 |  Slot | 2,3000 mm | 1,0000 mm |    PTH |     Pad |        F.Cu |       B.Cu |
+|     1 |  Slot | 1,0000 mm | 3,2000 mm |    PTH |     Pad |        F.Cu |       B.Cu |
+|     1 |  Slot | 3,2000 mm | 1,0000 mm |    PTH |     Pad |        F.Cu |       B.Cu |
+|     1 |  Slot | 3,6000 mm | 1,0000 mm |    PTH |     Pad |        F.Cu |       B.Cu |

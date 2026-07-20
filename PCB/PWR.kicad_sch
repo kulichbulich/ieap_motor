@@ -2805,13 +2805,19 @@
 		(uuid "0c049c28-6ae9-41af-87ad-1696e360c32a")
 	)
 	(junction
+		(at 54.61 52.07)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "1ce47548-e4c1-4dbd-93a7-5af388ef9945")
+	)
+	(junction
 		(at 222.25 63.5)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "1fcfac92-39cf-4f90-a7ae-451b4a614b0c")
 	)
 	(junction
-		(at 80.01 53.34)
+		(at 88.9 52.07)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "2065f315-835e-466a-a8e5-cef87837822d")
@@ -2823,7 +2829,13 @@
 		(uuid "29aa345f-2174-4b22-a701-47a5e702499f")
 	)
 	(junction
-		(at 76.2 53.34)
+		(at 30.48 48.26)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "2c27ef2e-7ffd-40cb-b4b8-f582aeccd853")
+	)
+	(junction
+		(at 85.09 52.07)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "2cc5dd12-edb8-4782-af26-868b6e77f682")
@@ -2833,12 +2845,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "4857fa52-d353-462d-abc0-8b20cebbc232")
-	)
-	(junction
-		(at 27.94 48.26)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "66561f2f-f897-4227-8c8e-5b1df9e01e57")
 	)
 	(junction
 		(at 222.25 58.42)
@@ -2853,6 +2859,18 @@
 		(uuid "6dcb492f-db5a-4f9f-91d4-a06917898490")
 	)
 	(junction
+		(at 21.59 40.64)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "74766e57-8d73-423a-a3cd-99cc58fc89f0")
+	)
+	(junction
+		(at 31.75 43.18)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "7ab24e7c-1b63-4a5b-b140-d80933d663fb")
+	)
+	(junction
 		(at 214.63 63.5)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2865,16 +2883,22 @@
 		(uuid "b2b6f02a-aed3-4964-afa6-a78d019a0a75")
 	)
 	(junction
-		(at 29.21 40.64)
+		(at 41.91 45.72)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "bb825d2a-2f5c-47c4-aef8-b03bc290c595")
+		(uuid "bfe559a0-7237-4fa3-8858-4b439671c321")
 	)
 	(junction
 		(at 50.8 40.64)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "d244c559-21cc-4fa0-8887-29b23a59c765")
+	)
+	(junction
+		(at 27.94 48.26)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "d76333f2-b3ca-4d15-a5dc-6a5ef5403128")
 	)
 	(junction
 		(at 212.09 58.42)
@@ -2926,7 +2950,7 @@
 	)
 	(polyline
 		(pts
-			(xy 92.964 11.938) (xy 93.472 90.424)
+			(xy 102.87 12.7) (xy 102.87 90.17)
 		)
 		(stroke
 			(width 0)
@@ -2943,6 +2967,16 @@
 			(type default)
 		)
 		(uuid "0f79b716-4856-4112-be8a-b5d69facbb22")
+	)
+	(wire
+		(pts
+			(xy 54.61 52.07) (xy 50.8 52.07)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "115e0e08-9446-484a-a630-f671916e10ec")
 	)
 	(wire
 		(pts
@@ -2966,7 +3000,7 @@
 	)
 	(polyline
 		(pts
-			(xy 11.938 90.932) (xy 93.472 90.424)
+			(xy 12.7 90.17) (xy 102.87 90.17)
 		)
 		(stroke
 			(width 0)
@@ -2976,13 +3010,13 @@
 	)
 	(wire
 		(pts
-			(xy 29.21 40.64) (xy 50.8 40.64)
+			(xy 16.51 40.64) (xy 21.59 40.64)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "19577bcb-7861-4e83-bb15-330cf5a0b2f5")
+		(uuid "19c3c8ff-8f69-4acf-bae3-e913f93a381f")
 	)
 	(wire
 		(pts
@@ -2996,7 +3030,7 @@
 	)
 	(wire
 		(pts
-			(xy 76.2 53.34) (xy 76.2 55.88)
+			(xy 85.09 52.07) (xy 85.09 54.61)
 		)
 		(stroke
 			(width 0)
@@ -3013,6 +3047,16 @@
 			(type default)
 		)
 		(uuid "24c8ac07-86c6-4778-98b5-401900d5bca3")
+	)
+	(wire
+		(pts
+			(xy 31.75 27.94) (xy 31.75 43.18)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "29e4ccd3-331a-4458-a92a-c6e43b615ae1")
 	)
 	(wire
 		(pts
@@ -3036,7 +3080,7 @@
 	)
 	(wire
 		(pts
-			(xy 27.94 48.26) (xy 31.75 48.26)
+			(xy 30.48 64.77) (xy 45.72 64.77)
 		)
 		(stroke
 			(width 0)
@@ -3046,7 +3090,7 @@
 	)
 	(wire
 		(pts
-			(xy 76.2 66.04) (xy 76.2 63.5)
+			(xy 85.09 64.77) (xy 85.09 62.23)
 		)
 		(stroke
 			(width 0)
@@ -3056,7 +3100,7 @@
 	)
 	(wire
 		(pts
-			(xy 68.58 53.34) (xy 76.2 53.34)
+			(xy 77.47 52.07) (xy 85.09 52.07)
 		)
 		(stroke
 			(width 0)
@@ -3106,6 +3150,16 @@
 	)
 	(wire
 		(pts
+			(xy 22.86 43.18) (xy 21.59 43.18)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "43d65b96-b054-4596-8801-b046cdd8be58")
+	)
+	(wire
+		(pts
 			(xy 203.2 55.88) (xy 228.6 55.88)
 		)
 		(stroke
@@ -3126,6 +3180,26 @@
 	)
 	(wire
 		(pts
+			(xy 30.48 48.26) (xy 27.94 48.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "47d73da3-eb42-47dc-8df5-2968f6902158")
+	)
+	(wire
+		(pts
+			(xy 54.61 45.72) (xy 54.61 52.07)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4da88ffa-9e48-442f-af0d-45883f6e3679")
+	)
+	(wire
+		(pts
 			(xy 222.25 63.5) (xy 222.25 69.85)
 		)
 		(stroke
@@ -3133,6 +3207,16 @@
 			(type default)
 		)
 		(uuid "587c62c0-1b95-4b46-88a8-2d17c655b937")
+	)
+	(wire
+		(pts
+			(xy 30.48 48.26) (xy 31.75 48.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5fb7d115-9550-42ff-a890-838af463eb9b")
 	)
 	(wire
 		(pts
@@ -3166,7 +3250,7 @@
 	)
 	(wire
 		(pts
-			(xy 80.01 52.07) (xy 80.01 53.34)
+			(xy 88.9 50.8) (xy 88.9 52.07)
 		)
 		(stroke
 			(width 0)
@@ -3186,7 +3270,7 @@
 	)
 	(wire
 		(pts
-			(xy 76.2 53.34) (xy 80.01 53.34)
+			(xy 85.09 52.07) (xy 88.9 52.07)
 		)
 		(stroke
 			(width 0)
@@ -3216,7 +3300,27 @@
 	)
 	(wire
 		(pts
-			(xy 80.01 53.34) (xy 81.28 53.34)
+			(xy 21.59 43.18) (xy 21.59 40.64)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7b0d1d2f-ccfe-417a-990b-307d71253a7f")
+	)
+	(wire
+		(pts
+			(xy 41.91 45.72) (xy 43.18 45.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7eab1e2c-8346-4c41-bd09-fd89979aa1a1")
+	)
+	(wire
+		(pts
+			(xy 88.9 52.07) (xy 90.17 52.07)
 		)
 		(stroke
 			(width 0)
@@ -3276,6 +3380,16 @@
 	)
 	(wire
 		(pts
+			(xy 30.48 43.18) (xy 31.75 43.18)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9c5ceccf-3cbf-4c46-b1c4-0df429085303")
+	)
+	(wire
+		(pts
 			(xy 203.2 63.5) (xy 214.63 63.5)
 		)
 		(stroke
@@ -3283,6 +3397,16 @@
 			(type default)
 		)
 		(uuid "9c613fc4-7774-4706-a7cb-7286c48b9e80")
+	)
+	(wire
+		(pts
+			(xy 21.59 40.64) (xy 50.8 40.64)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9e3d4d31-d82a-44eb-b317-d7548897aa79")
 	)
 	(wire
 		(pts
@@ -3306,16 +3430,6 @@
 	)
 	(wire
 		(pts
-			(xy 29.21 40.64) (xy 29.21 43.18)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a81608e1-26fd-4fc7-8500-06b596b3aae8")
-	)
-	(wire
-		(pts
 			(xy 189.23 38.1) (xy 189.23 39.37)
 		)
 		(stroke
@@ -3326,6 +3440,16 @@
 	)
 	(wire
 		(pts
+			(xy 33.02 27.94) (xy 31.75 27.94)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b1dcb212-697c-4210-881b-b605be19bf0a")
+	)
+	(wire
+		(pts
 			(xy 214.63 63.5) (xy 214.63 69.85)
 		)
 		(stroke
@@ -3333,6 +3457,16 @@
 			(type default)
 		)
 		(uuid "b4f820ad-8966-41d0-bf04-b62b0c2c23b6")
+	)
+	(wire
+		(pts
+			(xy 60.96 45.72) (xy 54.61 45.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b5e9ef3b-c722-4205-9724-e519d6dcb75c")
 	)
 	(wire
 		(pts
@@ -3353,6 +3487,16 @@
 			(type default)
 		)
 		(uuid "bb09f871-8d13-415f-b8ae-35871de682fc")
+	)
+	(wire
+		(pts
+			(xy 50.8 52.07) (xy 50.8 50.8)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bd103569-21dc-42f5-be90-41f11280e604")
 	)
 	(wire
 		(pts
@@ -3416,7 +3560,7 @@
 	)
 	(wire
 		(pts
-			(xy 43.18 45.72) (xy 41.91 45.72)
+			(xy 45.72 59.69) (xy 41.91 59.69)
 		)
 		(stroke
 			(width 0)
@@ -3433,6 +3577,16 @@
 			(type default)
 		)
 		(uuid "d61562e6-c26d-4020-a4f9-d6875771ad4c")
+	)
+	(wire
+		(pts
+			(xy 41.91 59.69) (xy 41.91 45.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d70afbf3-2548-4666-b4d4-b224519dbf76")
 	)
 	(wire
 		(pts
@@ -3476,16 +3630,6 @@
 	)
 	(wire
 		(pts
-			(xy 50.8 53.34) (xy 50.8 50.8)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e77bbe18-474e-483b-9c49-4a34582ddeb0")
-	)
-	(wire
-		(pts
 			(xy 27.94 59.69) (xy 27.94 55.88)
 		)
 		(stroke
@@ -3496,23 +3640,13 @@
 	)
 	(wire
 		(pts
-			(xy 29.21 40.64) (xy 16.51 40.64)
+			(xy 59.69 52.07) (xy 54.61 52.07)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "f14c59b1-9a7f-4d92-a061-f6754e873aac")
-	)
-	(wire
-		(pts
-			(xy 29.21 43.18) (xy 31.75 43.18)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f39bb4b5-d69c-471b-b41f-b77fdcb66235")
+		(uuid "f5cb0b86-544d-4ca9-a687-ca7e31bbea48")
 	)
 	(wire
 		(pts
@@ -3524,19 +3658,29 @@
 		)
 		(uuid "fa51f063-7062-43af-bfc3-77b85fa71737")
 	)
+	(wire
+		(pts
+			(xy 30.48 64.77) (xy 30.48 48.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fae624d9-6fc8-4647-b215-4cdc44583d49")
+	)
 	(global_label "PWRSWITCH_gate"
 		(shape input)
-		(at 43.18 45.72 270)
+		(at 45.72 59.69 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right)
+			(justify left)
 		)
 		(uuid "0d4e8422-853f-4c34-aa91-832f2aab7602")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 43.18 64.6103 90)
+			(at 64.6103 59.69 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3544,7 +3688,31 @@
 				(font
 					(size 1.27 1.27)
 				)
-				(justify right)
+				(justify left)
+			)
+		)
+	)
+	(global_label "24V_Motor"
+		(shape input)
+		(at 60.96 45.72 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "4db17971-16fb-4424-94df-3543ff821678")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 73.6817 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
 			)
 		)
 	)
@@ -3574,7 +3742,7 @@
 	)
 	(global_label "24V"
 		(shape input)
-		(at 81.28 53.34 0)
+		(at 90.17 52.07 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -3584,7 +3752,7 @@
 		)
 		(uuid "84b92beb-8ad5-4bbe-92f9-ea86b3bcef41")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 87.7728 53.34 0)
+			(at 96.6628 52.07 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3622,17 +3790,17 @@
 	)
 	(global_label "PWRSWITCH_diode"
 		(shape input)
-		(at 31.75 48.26 270)
+		(at 45.72 64.77 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right)
+			(justify left)
 		)
 		(uuid "be1dfaf8-d822-4982-b789-d11720ecc040")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 31.75 68.1784 90)
+			(at 65.6384 64.77 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3640,7 +3808,31 @@
 				(font
 					(size 1.27 1.27)
 				)
-				(justify right)
+				(justify left)
+			)
+		)
+	)
+	(global_label "PWRSWITCH_Voltage"
+		(shape input)
+		(at 33.02 27.94 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "e3f7ee82-95a2-43f5-8878-2e08a1ce01a6")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 54.8131 27.94 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
 			)
 		)
 	)
@@ -4481,7 +4673,7 @@
 	)
 	(symbol
 		(lib_id "VNLib:MINISMDC150F_24-2_polyfuse")
-		(at 50.8 53.34 0)
+		(at 59.69 52.07 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -4491,7 +4683,7 @@
 		(dnp no)
 		(uuid "6208b61b-845d-4cef-9237-2af927edb2a8")
 		(property "Reference" "F2"
-			(at 59.944 50.546 0)
+			(at 68.834 49.276 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4501,7 +4693,7 @@
 			)
 		)
 		(property "Value" "MINISMDC150F_24-2_polyfuse"
-			(at 60.198 56.388 0)
+			(at 69.088 55.118 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4511,7 +4703,7 @@
 			)
 		)
 		(property "Footprint" "VNfootprints:polyfuse"
-			(at 64.77 149.53 0)
+			(at 73.66 148.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4523,7 +4715,7 @@
 			)
 		)
 		(property "Datasheet" "http://www.littelfuse.com/~/media/electronics/datasheets/resettable_ptcs/littelfuse_ptc_minismdc_datasheet.pdf.pdf"
-			(at 64.77 249.53 0)
+			(at 73.66 248.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4535,7 +4727,7 @@
 			)
 		)
 		(property "Description" "PTC Resettable Fuse 1.5A(hold) 3A(trip) 24VDC 20A 1W 1.5s 0.04Ohm SMD Solder Pad 4.83 X 3.41 X 1.94mm T/R Automotive"
-			(at 53.34 55.88 0)
+			(at 62.23 54.61 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4546,7 +4738,7 @@
 			)
 		)
 		(property "Height" "1.94"
-			(at 64.77 449.53 0)
+			(at 73.66 448.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4558,7 +4750,7 @@
 			)
 		)
 		(property "Mouser Part Number" "650-MINISMDC150F/24"
-			(at 64.77 549.53 0)
+			(at 73.66 548.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4570,7 +4762,7 @@
 			)
 		)
 		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Littelfuse/MINISMDC150F-24-2?qs=F6FIpiMdEVZ%2Fp37J%2FDHAxA%3D%3D"
-			(at 64.77 649.53 0)
+			(at 73.66 648.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4582,7 +4774,7 @@
 			)
 		)
 		(property "Manufacturer_Name" "LITTELFUSE"
-			(at 64.77 749.53 0)
+			(at 73.66 748.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4594,7 +4786,7 @@
 			)
 		)
 		(property "Manufacturer_Part_Number" "MINISMDC150F/24-2"
-			(at 64.77 849.53 0)
+			(at 73.66 848.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5181,7 +5373,7 @@
 	)
 	(symbol
 		(lib_id "power:PWR_FLAG")
-		(at 80.01 52.07 0)
+		(at 88.9 50.8 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -5192,7 +5384,7 @@
 		(fields_autoplaced yes)
 		(uuid "81f976af-a705-4a63-abb2-68e1d2fe21e8")
 		(property "Reference" "#FLG03"
-			(at 80.01 50.165 0)
+			(at 88.9 48.895 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5203,7 +5395,7 @@
 			)
 		)
 		(property "Value" "PWR_FLAG"
-			(at 80.01 46.99 0)
+			(at 88.9 45.72 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5213,7 +5405,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 80.01 52.07 0)
+			(at 88.9 50.8 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5224,7 +5416,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 80.01 52.07 0)
+			(at 88.9 50.8 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5235,7 +5427,7 @@
 			)
 		)
 		(property "Description" "Special symbol for telling ERC where power comes from"
-			(at 80.01 52.07 0)
+			(at 88.9 50.8 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5348,7 +5540,7 @@
 		(dnp no)
 		(uuid "8a63c05e-96b8-44f7-b7d2-48790c490611")
 		(property "Reference" "PMOS1"
-			(at 54.61 46.9901 0)
+			(at 52.324 42.418 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5359,7 +5551,7 @@
 			)
 		)
 		(property "Value" "IRF4905STRLPBF"
-			(at 54.61 44.4501 0)
+			(at 52.324 40.386 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5448,6 +5640,86 @@
 			(project "esp32stepper"
 				(path "/29a68080-a031-4f05-96b8-20ecd97fb7f6/af86f007-a426-49d5-88df-f35545519537"
 					(reference "PMOS1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 26.67 43.18 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "95c76f2f-b923-4e0f-856e-7cf144b2479f")
+		(property "Reference" "R43"
+			(at 26.67 36.83 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "100k"
+			(at 26.67 39.37 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder"
+			(at 26.67 44.958 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 26.67 43.18 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 26.67 43.18 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "a2ad3ea4-af8c-4089-92cd-2af3db0b157a")
+		)
+		(pin "1"
+			(uuid "ab57604b-4a88-4728-97be-d11d4d4a630a")
+		)
+		(instances
+			(project "esp32stepper"
+				(path "/29a68080-a031-4f05-96b8-20ecd97fb7f6/af86f007-a426-49d5-88df-f35545519537"
+					(reference "R43")
 					(unit 1)
 				)
 			)
@@ -5773,7 +6045,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 76.2 66.04 0)
+		(at 85.09 64.77 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -5784,7 +6056,7 @@
 		(fields_autoplaced yes)
 		(uuid "a4e68800-341e-4da0-96c5-9c2ec356c7b0")
 		(property "Reference" "#PWR033"
-			(at 76.2 72.39 0)
+			(at 85.09 71.12 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5795,7 +6067,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 76.2 71.12 0)
+			(at 85.09 69.85 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5805,7 +6077,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 76.2 66.04 0)
+			(at 85.09 64.77 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5816,7 +6088,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 76.2 66.04 0)
+			(at 85.09 64.77 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5827,7 +6099,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 76.2 66.04 0)
+			(at 85.09 64.77 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6008,7 +6280,7 @@
 	)
 	(symbol
 		(lib_id "Diode:PTVS5V0Z1USK")
-		(at 76.2 59.69 270)
+		(at 85.09 58.42 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -6019,7 +6291,7 @@
 		(fields_autoplaced yes)
 		(uuid "b120d6f2-3ff3-44fd-a975-3518aaa4d908")
 		(property "Reference" "TVS0"
-			(at 78.74 58.4199 90)
+			(at 87.63 57.1499 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6030,7 +6302,7 @@
 			)
 		)
 		(property "Value" "TSM24ADBZR"
-			(at 78.74 60.9599 90)
+			(at 87.63 59.6899 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6041,7 +6313,7 @@
 			)
 		)
 		(property "Footprint" "Package_TO_SOT_SMD:TSOT-23"
-			(at 71.755 59.69 0)
+			(at 80.645 58.42 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6052,7 +6324,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/tsm24a-q1.pdf?ts=1783418861293"
-			(at 76.2 59.69 0)
+			(at 85.09 58.42 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6063,7 +6335,7 @@
 			)
 		)
 		(property "Description" "24V working, 38V clamp, 75nA leakage @ 24V"
-			(at 76.2 59.69 0)
+			(at 85.09 58.42 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
