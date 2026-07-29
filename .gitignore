@@ -7,3 +7,4 @@ fp-info-cache
 *.000
 *.lck
 *~
+.DS_Store
