@@ -18,3 +18,10 @@ LT8610: https://www.analog.com/media/en/technical-documentation/data-sheets/lt86
 
 ### Polyswitch
 https://cz.mouser.com/ProductDetail/Littelfuse/MINISMDC150F-24-2?qs=F6FIpiMdEVZ%2Fp37J%2FDHAxA%3D%3D
+
+
+# Enclosure
+
+![Enclosure - open view](./sestava_krabi_V2_2026-Jul-27_03-42-36PM-000_CustomizedView22514814300.png)
+
+![Enclosure - closed view](./sestava_krabi_V2_2026-Jul-27_03-43-12PM-000_CustomizedView22514814300.png)
