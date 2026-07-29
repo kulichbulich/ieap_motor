@@ -4,7 +4,7 @@ Test suite for the custom 4-channel stepper board (ESP32-S3-WROOM-2 + 4× TMC220
 SilentStepStick). **This is not application firmware** — it is a ladder of tests that prove the
 board works, one subsystem at a time.
 
-Czech version of this document: [README.cs.md](README.cs.md)
+Czech version of this document: [README_CZ_.md](README_CZ.md)
 
 ---
 
