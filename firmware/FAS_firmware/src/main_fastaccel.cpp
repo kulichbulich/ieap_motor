@@ -1,23 +1,12 @@
-// FAS firmware - nejjednodussi aplikacni firmware desky esp32stepper.
+// FAS firmware - prototyp main.cpp s FastAccelStepperem (env:fas_accel).
 // Verze: 0.0.1
 //
-// Co dela: nastavi jeden driver TMC2209 po UART (proud, mikrokrok), povoli ho
-// a pak uz jen porad dokola jede jednu otacku tam, pauza, jednu otacku zpet,
-// pauza. Nic se neovlada z konzole - konzole jen vypisuje, co se deje. Vsechna
-// nastaveni jsou v include/fas_config.h.
-//
-// Proc je to postavene takhle:
-//   - Je to prvni krok od testu (../testing_firmware) k aplikaci. Testy se
-//     ptaji na parametry a cekaji na cloveka; tenhle firmware se rozjede sam
-//     po zapnuti, jako to bude delat hotovy stroj.
-//   - Pohyb je v otackach a rpm, ne v krocich - kroky si firmware spocita
-//     z mikrokroku, ktery sam nastavil.
-//   - Proud se nastavuje v mA (RMS na fazi) a firmware vypise, na jakou
-//     hodnotu se to zaokrouhlilo. CS registr je jen 5 bitu, takze zadanou
-//     hodnotu nepotrefi presne.
-//
-// Co to potrebuje: 24 V na barrel jacku, motor v konektoru BOB-3 (viz
-// fas_config.h MOTOR), prosle testy T06/T07/T08 na te same desce.
+// Chovani je zamerne shodne s main.cpp: totez nastaveni z fas_config.h, tatez
+// hlaseni na konzoli, stejny cyklus tam-pauza-zpet-pauza. Jedina zmena je
+// #include a typ `mot` - misto rucniho generatoru kroku (stepper.h) jede
+// StepperFA (stepper_fastaccel.h), ktery kroky generuje pres knihovnu
+// FastAccelStepper. Cil je mit oba pristupy vedle sebe k porovnani, ne dva
+// ruzne firmwary - kdyz se tu neco upravi, sjednot to i v main.cpp a naopak.
 //
 // POZOR: motor se rozjede sam, 3 s po nabootovani. Mechanika musi mit volnou
 // drahu. Jizdu prerusi jakakoli klavesa z konzole nebo koncovy spinac.
@@ -28,13 +17,13 @@
 
 #include "board_pins.h"
 #include "fas_config.h"
-#include "stepper.h"
+#include "stepper_fastaccel.h"
 #include "tmc2209.h"
 
 namespace {
 
 fas::Tmc2209 drv;
-fas::Stepper mot;
+fas::StepperFA mot;
 
 // Kolik kroku je jeden pohyb. Kroky, ne otacky, jsou to, cim se hybe driver.
 constexpr int32_t MOVE_STEPS =
@@ -70,7 +59,7 @@ void console_begin() {
 
 void banner() {
   logln("===================================================");
-  logln("  FAS firmware - pohyb tam a zpet");
+  logln("  FAS firmware - pohyb tam a zpet (FastAccelStepper prototyp)");
   logln("===================================================");
 }
 
