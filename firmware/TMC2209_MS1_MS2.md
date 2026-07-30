@@ -1,5 +1,5 @@
 # TMC2209: MS1/MS2 určují na této desce zároveň adresu i mikrokrokování
-@doc_pwc: file:TMC2209_MS1_MS2.md | id:HW-00201 | created:2026-07-30 | rev:1 | revised:2026-07-30_1730 | type:REF
+@doc_pwc: file:TMC2209_MS1_MS2.md | id:HW-00201 | created:2026-07-30 | rev:2 | revised:2026-07-30_1744 | type:REF
 
 ## Shrnutí
 
@@ -49,6 +49,79 @@ U **každého** driveru zvlášť, po navázání UART komunikace:
    nedělal automatické vypínání při stání. Po resetu je 0.
 
 Adresu naopak přepisovat nelze ani netřeba — čte se z pinů průběžně a je správná.
+
+## Kód pro všechny čtyři drivery
+
+Konfigurace jde po té samé jednodrátové UART sběrnici jako čtení (IO17 → `R19` →
+sběrnice → IO18). Registry driveru jsou **volatilní** — žijí jen dokud má driver `VM`.
+Po výpadku 24 V se vrátí na výchozí hodnoty a piny zase převezmou mikrokrokování, proto
+je součástí kódu i hlídání `GSTAT` bitu 0.
+
+```cpp
+// MRES: 0=1/256, 1=1/128, 2=1/64, 3=1/32, 4=1/16, 5=1/8, 6=1/4, 7=1/2, 8=plny krok
+static constexpr uint8_t MRES_WANTED = 4;  // 1/16 pro vsechny osy
+
+// Nastavi jeden driver. Cti-uprav-zapis, ne zapis celeho slova - jinak se smazou
+// ostatni bity (napr. I_scale_analog v GCONF, ktery driver ma po resetu nastaveny).
+bool init_driver(tk::TmcBus& bus, uint8_t node, uint8_t mres) {
+  uint32_t gconf = 0;
+  if (!bus.read_reg(node, tk::TMC_GCONF, &gconf)) return false;
+  gconf |= (1UL << 7);   // mstep_reg_select: MRES z registru, ne z pinu MS1/MS2
+  gconf |= (1UL << 6);   // pdn_disable: pin PDN nedela power-down pri stani
+  bus.write_reg(node, tk::TMC_GCONF, gconf);
+
+  // POZOR na poradi: dokud je bit 7 nula, cte se MRES z pinu. Jakmile se nastavi,
+  // zacne platit registrova hodnota - a ta je po resetu 0, tedy 1/256. Kdyby se
+  // MRES nezapsal hned tady, driver by potichu preskocil na 1/256 a motor by se
+  // na stejny pocet pulzu otocil 16x min.
+  uint32_t chop = 0;
+  if (!bus.read_reg(node, tk::TMC_CHOPCONF, &chop)) return false;
+  chop = (chop & ~(0xFUL << 24)) | (static_cast<uint32_t>(mres) << 24);
+  bus.write_reg(node, tk::TMC_CHOPCONF, chop);
+
+  // Zapis se sam nijak nepotvrzuje - TmcBus::write_reg() vraci true vzdycky.
+  // Bud se cte zpatky, jako tady, nebo se hlida IFCNT (0x02), ktery driver
+  // inkrementuje po kazdem uspesnem zapisu.
+  uint32_t back = 0;
+  if (!bus.read_reg(node, tk::TMC_CHOPCONF, &back)) return false;
+  return ((back >> 24) & 0xF) == mres;
+}
+
+// Vsechny ctyri osy najednou. Vraci pocet uspesne nastavenych driveru.
+uint8_t init_all_drivers(tk::TmcBus& bus, uint8_t mres) {
+  uint8_t ok = 0;
+  for (uint8_t m = 0; m < 4; ++m) {
+    if (init_driver(bus, TMC_ADDR[m], mres)) ++ok;
+  }
+  return ok;
+}
+
+// Vola se pravidelne za behu. Driver po vypadku VM zapomene konfiguraci a
+// GSTAT bit 0 je jediny zpusob, jak to firmware pozna.
+void recover_after_reset(tk::TmcBus& bus, uint8_t mres) {
+  for (uint8_t m = 0; m < 4; ++m) {
+    const uint8_t node = TMC_ADDR[m];
+    uint32_t gstat = 0;
+    if (!bus.read_reg(node, tk::TMC_GSTAT, &gstat)) continue;
+    if (gstat & 0x01) {                          // reset - konfigurace je pryc
+      init_driver(bus, node, mres);
+      bus.write_reg(node, tk::TMC_GSTAT, 0x01);  // zachytny bit se maze zapisem 1
+    }
+  }
+}
+```
+
+## Známá chyba, kterou to opravuje
+
+`testing_firmware/src/tests/t08_motor_move.cpp` zapisuje
+
+```cpp
+bus.write_reg(node, tk::TMC_GCONF, (1UL << 6) | (1UL << 7));
+```
+
+Nastaví tedy `mstep_reg_select`, ale `MRES` v `CHOPCONF` už nezapíše — driver tím přeskočí
+z 1/16 na 1/256. Navíc je to zápis celého slova, takže přemaže i `I_scale_analog` (bit 0).
+Projeví se to jako „motor se skoro nehýbe" nebo „ztrácí kroky" a hledá se to v mechanice.
 
 ## Související
 
