@@ -1,5 +1,5 @@
 # Jak flashnout desku esp32stepper
-@doc_pwc: file:FLASH.md | id:HW-00174 | created:2026-07-30 | rev:2 | revised:2026-07-30_0956 | type:PROC
+@doc_pwc: file:FLASH.md | id:HW-00174 | created:2026-07-30 | rev:3 | revised:2026-07-30_1140 | type:PROC
 
 Deska má **ESP32-S3-WROOM-2 N32R16V** (32 MB oktální flash). `pio run -t upload` na ní nefunguje —
 esptool 4.5.1 z PlatformIO padá na `BrokenPipeError`. Buildí se přes `pio`, flashuje zvlášť
@@ -26,8 +26,13 @@ Užitečné přepínače:
 | `-p /dev/ttyACM1` | když je připojených víc desek (jinak se jediná najde sama) |
 | `--check` | jen diagnostika flash, **nic nezapisuje** — první věc, když se deska chová divně |
 | `--no-build` | použij už přeložený build (např. přeložený z VSCode) |
-| `--help` | nápověda |
+| `--help` | nápověda **a k tomu seznam prostředí pro `-e`: co který test ověřuje a co k tomu musí být připojené** |
+| `--list` | jen ten seznam prostředí a testů, bez nápovědy |
 | `ESPTOOL_VENV=...` | jiné umístění venv než `~/venv-esptool` |
+
+Seznam se nikde nedrží podruhé — prostředí se čtou z `platformio.ini` a popisy testů
+z `src/test_registry.cpp`, tedy ze stejného zdroje, ze kterého je vypisuje menu na konzoli desky.
+Bez `-d` se bere aktuální adresář, z kořene repa se vypíšou všechny projekty vedle skriptu.
 
 ## Ruční postup
 

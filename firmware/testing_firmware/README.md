@@ -13,11 +13,12 @@ Czech version of this document: [README_CZ.md](README_CZ.md)
 | Tests | State |
 |---|---|
 | **T00 `chip_info`, T01 `blink_io38`** | run on real hardware, debugged, behave as documented |
-| **T02 … T08** | compile, never executed on hardware — PASS/FAIL logic is unverified |
+| **T02 … T09** | compile, never executed on hardware — PASS/FAIL logic is unverified |
 
 **Do not run T02 and above on a fresh board.** They drive the shift register, the STEP pins, the
-TMC UART and (T08) an actual motor; on an untested board an unvalidated test can just as easily be
-wrong about the board as the board is about the test, and T08 moves mechanics. Bring a new board up
+TMC UART and (T08, T09) an actual motor; on an untested board an unvalidated test can just as easily
+be wrong about the board as the board is about the test, and T08/T09 move mechanics. Bring a new
+board up
 with T00 and T01 only, and treat everything above as code that still needs review before its first
 run.
 
@@ -36,7 +37,7 @@ The two validated tests were run on an **ESP32-S3-DevKitC-1 N8R2**, not on the t
 - [PlatformIO](https://platformio.org/) CLI (`pio`) — the `espressif32` platform is fetched on
   first build
 - USB-C cable to the board's **USB1** connector (native USB CDC on IO19/IO20)
-- 24 V on the barrel jack only for T06 (optional) and T08 (required)
+- 24 V on the barrel jack only for T06 (optional) and T08 / T09 (required)
 
 All commands below run from this directory (`firmware/testing_firmware/`).
 
@@ -54,6 +55,72 @@ is the usual flow — you flash once and pick tests over USB, without reprogramm
 > USB-Serial/JTAG — especially while the chip is resetting. Build with `pio run` and flash with a
 > **standalone esptool 5.3.1**; the exact command is in [../report.md](../report.md).
 
+## Flashing with `../flash.sh --help`
+
+Because of the above, flashing goes through [../flash.sh](../flash.sh) — idempotent and
+machine-agnostic: it finds (or installs) `pio` and esptool ≥ 5.3.1, checks the flash and only then
+writes all four regions. The procedure and the manual fallback are in [../FLASH.md](../FLASH.md).
+
+`--help` prints the usage **and what each test does**; `--list` prints just that list. Both are read
+out of `platformio.ini` and `src/test_registry.cpp` — the same source the board's console menu uses,
+so the list cannot drift from the firmware.
+
+```text
+$ ../flash.sh --help
+flash.sh - nahrani firmware do desky esp32stepper (ESP32-S3-WROOM-2 N32R16V).
+
+Proc to nejde pres "pio run -t upload" a co delat, kdyz to nejde vubec, je
+ve FLASH.md (HW-00174) a report.md (HW-00173).
+
+Skript je zamerne IDEMPOTENTNI a nic nepredpoklada o stroji: sam si najde
+pio i esptool, na novem stroji je dotahne, na uz pouzitem jen zkontroluje
+verzi. Nic nemaze a nesaha na efuse.
+
+Pouziti:
+  firmware/flash.sh                                  # projekt = aktualni adresar, env = default_envs
+  firmware/flash.sh -d firmware/testing_firmware     # projekt explicitne
+  firmware/flash.sh -d firmware/test_simple -e usb_j5
+  firmware/flash.sh -p /dev/ttyACM1                  # kdyz je pripojenych vic desek
+  firmware/flash.sh --check                          # jen diagnostika flash, NIC nezapisuje
+  firmware/flash.sh --no-build                       # pouzij uz prelozeny build
+  firmware/flash.sh --help                           # tenhle text + co ktery test dela
+  firmware/flash.sh --list                           # jen seznam prostredi a testu
+
+--help i --list vypisou prostredi, ktera jde dat za -e, a u testu i to, co
+overuji a co k tomu musi byt pripojene - tedy to same, co vypise menu na
+konzoli desky. Bez -d se to vezme z aktualniho adresare, jinak ze vsech
+projektu vedle skriptu.
+
+Prepsat cestu k venv jde promennou ESPTOOL_VENV.
+
+prostredi pro -e v <repo>/firmware/testing_firmware:
+ * menu                 Vychozi prostredi: vsechny testy + menu na konzoli.
+   t00_chip_info        hlasi se cip, sedi flash/PSRAM varianta
+                          potreba: jen USB
+   t01_blink_io38       GPIO vystup na pinu J4
+                          potreba: LED+330R nebo multimetr
+   t02_shift_register   74HC595 budi DIR a EN
+                          potreba: sonda na patky BOB
+   t03_step_pins        STEP pulsy na IO4..IO7
+                          potreba: osciloskop
+   t04_endswitches      koncove spinace IO13..IO16
+                          potreba: spinace, ruka
+   t05_i2c_scan         TCA9548A a kanaly enkoderu
+                          potreba: nic / enkodery
+   t06_tmc_uart         drivery odpovidaji na UART
+                          potreba: osazene BOB-0..3
+   t07_wiring_selftest  DIR/EN/STEP overene ctenim IOIN
+                          potreba: osazene BOB-0..3
+   t08_motor_move       skutecny pohyb jednoho motoru
+                          potreba: 24 V + motor   POZOR: hybe motorem
+   t09_motor_jog        pusteni motoru a jednoduche pohyby po krocich
+                          potreba: 24 V + motor   POZOR: hybe motorem
+   * = default_envs, pouzije se bez -e
+```
+
+Without `-d` the list comes from the current directory; run it from the repo root and it lists every
+project next to the script (`testing_firmware` and `test_simple`).
+
 ### The console starts blank — that is normal
 
 The board has **no USB-UART bridge**; the console is native USB CDC. Anything printed before your
@@ -67,7 +134,7 @@ within two seconds you will see either the prompt or the whole menu.
 
 ```
 test> 0        run a single test by number
-test> a        run 00–07 in sequence (skips T08, no motor movement)
+test> a        run every test that does not move a motor (skips T08 and T09)
 test> ?        print the menu again
 ```
 
@@ -98,7 +165,7 @@ compiles, list the envs explicitly:
 ```bash
 pio run -e menu -e t00_chip_info -e t01_blink_io38 -e t02_shift_register -e t03_step_pins \
         -e t04_endswitches -e t05_i2c_scan -e t06_tmc_uart -e t07_wiring_selftest \
-        -e t08_motor_move
+        -e t08_motor_move -e t09_motor_jog
 ```
 
 Compiling every env is the only automated gate — there is no host-side test suite and no CI.
@@ -123,6 +190,35 @@ Each test assumes the ones before it passed. `src/test_registry.cpp` is the auth
 | 06 | `tmc_uart` | all four drivers answer, `VERSION = 0x21`, MS1/MS2 addressing | populated BOB-0…3 | ❌ |
 | 07 | `wiring_selftest` | DIR/EN/STEP wiring, **verified automatically** | populated BOB-0…3 | ❌ |
 | 08 | `motor_move` | a motor actually turns | 24 V + motor, free mechanics | ❌ |
+| 09 | `motor_jog` | motor runs on command: simple moves entered as step counts | 24 V + motor, free mechanics | ❌ |
+
+**T09 is the one you will live in.** T08 answers "does it turn at all"; T09 keeps the driver
+configured and enabled and lets you issue moves from the console, all in **steps** (a step is one
+microstep at the configured resolution — at 1/16 a revolution of a 200-step motor is 3200 steps).
+It defaults to the motor in **slot 03**, the one wired up for bring-up. Parameters asked up front:
+motor, `IRUN`, microsteps, steps per move, steps per second.
+
+| key | what it does |
+|---|---|
+| `f` / `b` | move the configured step count, direction A / B |
+| `F` / `B` | a single step, direction A / B (fine positioning) |
+| `n` | one-off step count and direction |
+| `d` / `v` | change steps per move / rate in steps per second |
+| `+` / `-` | rate ±25 % |
+| `t` | there-and-back 3× — backlash and lost steps |
+| `c` / `C` | run continuously in A / B until a key is pressed |
+| `s` | ramp: accelerate to 2× the rate and decelerate back |
+| `a` / `u` | change the `IRUN` current / microstep resolution |
+| `m` | switch motor (the previous driver is released first) |
+| `0` | zero the position counter — "this is the start" |
+| `i` | driver status (`DRV_STATUS`, `IOIN`, `IFCNT`) and end-switch level |
+| `r` | quit and run the test again from the start (new parameters) |
+| `x` | quit — driver disabled, results evaluated |
+
+The position counter runs in steps from the start (`+` = direction A) and is printed after every
+move, so a symmetric move that ends off the mark is a lost-step count you can read. The end switch
+of the selected motor stops any move — but only if it reads H at rest; if nothing is wired there,
+guarding is switched off and the only stop is a keypress.
 
 **T07 is the one worth understanding.** The TMC2209's `IOIN` register reads back the levels of its
 own DIR / ENN / STEP input pins, so the firmware can set a level through the shift register or a
@@ -139,8 +235,10 @@ stationary. Prefer extending T07 over adding another probe-and-eyeball test.
   pushed out first.
 - T02 briefly enables each driver in turn (holding torque, current draw) and asks before doing so.
   T03 and T07 keep all drivers disabled, so nothing moves even with 24 V connected.
-- **Only T08 moves a motor.** It asks for the motor, step count, rate and `IRUN` current, and
-  refuses to start until you confirm the mechanics are clear. Sequence mode (`a`) skips it.
+- **Only T08 and T09 move a motor.** Both ask for the motor, step count, rate and `IRUN` current and
+  refuse to start until you confirm the mechanics are clear; T09 additionally stops on the selected
+  motor's end switch and on any keypress. Both are flagged `moves_motor` in `src/test_registry.cpp`,
+  and sequence mode (`a`) skips everything carrying that flag.
 - There is **no software-controllable LED** on the board (LED1 hangs off the LT8610's PG pin via an
   NPN). IO38 is brought out to the single-pin header J4 only.
 

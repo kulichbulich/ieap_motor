@@ -1,5 +1,5 @@
 // Pin mapa desky esp32stepper, odectena z netlistu (PCB/*.kicad_sch).
-// POZOR: nesouhlasi s tabulkou ve firmware/README.md - platna je tato.
+
 #pragma once
 
 #include <stdint.h>

@@ -235,6 +235,7 @@ void TmcBus::begin(uint32_t baud) {
     Serial1.read();
   }
   errors_ = 0;
+  echo_seen_ = false;
 }
 
 bool TmcBus::read_exact(uint8_t* buf, size_t n, uint32_t timeout_ms) {
@@ -250,10 +251,13 @@ bool TmcBus::read_exact(uint8_t* buf, size_t n, uint32_t timeout_ms) {
   return true;
 }
 
-void TmcBus::discard_echo(size_t n) {
+bool TmcBus::discard_echo(size_t n) {
   // IO18 visi na stejne sbernici jako IO17, takze ctame i vlastni vysilani.
+  // Jestli se echo vratilo, si pamatujeme - je to jedina informace, ktera
+  // odlisi vadnou TX/RX cestu od driveru, ktery jen neodpovida.
   uint8_t sink[12];
-  read_exact(sink, n, 20);
+  echo_seen_ = read_exact(sink, n, 20);
+  return echo_seen_;
 }
 
 bool TmcBus::write_reg(uint8_t node, uint8_t reg, uint32_t value) {

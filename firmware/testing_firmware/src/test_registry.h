@@ -9,6 +9,7 @@ struct TestEntry {
   const char* desc;
   const char* needs;  // co je potreba mit pripojene
   void (*fn)();
+  bool moves_motor;   // true = hybe motorem, sekvencni rezim ho vynecha
 };
 
 extern const TestEntry TESTS[];
@@ -24,3 +25,4 @@ void t05_i2c_scan();
 void t06_tmc_uart();
 void t07_wiring_selftest();
 void t08_motor_move();
+void t09_motor_jog();

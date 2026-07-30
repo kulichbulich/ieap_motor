@@ -13,11 +13,11 @@ English version: [README.md](README.md)
 | Testy | Stav |
 |---|---|
 | **T00 `chip_info`, T01 `blink_io38`** | spuštěné na reálném hardwaru, odladěné, chovají se podle dokumentace |
-| **T02 … T08** | přeloží se, na hardwaru nikdy neběžely — logika PASS/FAIL je neověřená |
+| **T02 … T09** | přeloží se, na hardwaru nikdy neběžely — logika PASS/FAIL je neověřená |
 
-**Na nové desce nedoporučuji zkoušet T02 a výš.** Budí posuvný registr, STEP piny, TMC UART a (T08)
-skutečný motor; na neoživené desce se stejně snadno může mýlit neověřený test jako deska, a T08
-navíc rozhýbe mechaniku. Novou desku oživuj jen testy T00 a T01, na všechno ostatní se koukej jako
+**Na nové desce nedoporučuji zkoušet T02 a výš.** Budí posuvný registr, STEP piny, TMC UART a (T08,
+T09) skutečný motor; na neoživené desce se stejně snadno může mýlit neověřený test jako deska, a T08
+s T09 navíc rozhýbou mechaniku. Novou desku oživuj jen testy T00 a T01, na všechno ostatní se koukej jako
 na kód, který si před prvním spuštěním zaslouží revizi.
 
 Ty dva odladěné testy běžely na **ESP32-S3-DevKitC-1 N8R2**, ne na cílové desce.
@@ -35,7 +35,7 @@ Ty dva odladěné testy běžely na **ESP32-S3-DevKitC-1 N8R2**, ne na cílové 
 - [PlatformIO](https://platformio.org/) CLI (`pio`) — platformu `espressif32` si stáhne sám při
   prvním buildu
 - kabel USB-C do konektoru **USB1** na desce (nativní USB CDC na IO19/IO20)
-- 24 V na barrel jack až pro T06 (nepovinně) a T08 (povinně)
+- 24 V na barrel jack až pro T06 (nepovinně) a T08 / T09 (povinně)
 
 Všechny příkazy níže se spouští z této složky (`firmware/testing_firmware/`).
 
@@ -53,6 +53,72 @@ režim — nahraje se jednou a testy se pak vybírají po USB, bez přeprogramov
 > zvlášť když se čip zároveň resetuje. Přelož přes `pio run` a nahraj **samostatným esptoolem
 > 5.3.1**; přesný příkaz je v [../report.md](../report.md).
 
+## Nahrávání a `../flash.sh --help`
+
+Kvůli tomu výše se nahrává skriptem [../flash.sh](../flash.sh) — je idempotentní a nic
+nepředpokládá o stroji: najde (nebo doinstaluje) `pio` a esptool ≥ 5.3.1, zkontroluje flash a teprve
+pak zapíše všechny čtyři regiony. Postup i ruční varianta jsou ve [../FLASH.md](../FLASH.md).
+
+`--help` vypíše nápovědu **a k tomu co který test dělá**, `--list` jen ten seznam. Oboje se čte
+z `platformio.ini` a `src/test_registry.cpp`, tedy ze stejného zdroje, ze kterého ho vypisuje menu na
+konzoli desky — seznam se proto nemůže rozejít s firmwarem.
+
+```text
+$ ../flash.sh --help
+flash.sh - nahrani firmware do desky esp32stepper (ESP32-S3-WROOM-2 N32R16V).
+
+Proc to nejde pres "pio run -t upload" a co delat, kdyz to nejde vubec, je
+ve FLASH.md (HW-00174) a report.md (HW-00173).
+
+Skript je zamerne IDEMPOTENTNI a nic nepredpoklada o stroji: sam si najde
+pio i esptool, na novem stroji je dotahne, na uz pouzitem jen zkontroluje
+verzi. Nic nemaze a nesaha na efuse.
+
+Pouziti:
+  firmware/flash.sh                                  # projekt = aktualni adresar, env = default_envs
+  firmware/flash.sh -d firmware/testing_firmware     # projekt explicitne
+  firmware/flash.sh -d firmware/test_simple -e usb_j5
+  firmware/flash.sh -p /dev/ttyACM1                  # kdyz je pripojenych vic desek
+  firmware/flash.sh --check                          # jen diagnostika flash, NIC nezapisuje
+  firmware/flash.sh --no-build                       # pouzij uz prelozeny build
+  firmware/flash.sh --help                           # tenhle text + co ktery test dela
+  firmware/flash.sh --list                           # jen seznam prostredi a testu
+
+--help i --list vypisou prostredi, ktera jde dat za -e, a u testu i to, co
+overuji a co k tomu musi byt pripojene - tedy to same, co vypise menu na
+konzoli desky. Bez -d se to vezme z aktualniho adresare, jinak ze vsech
+projektu vedle skriptu.
+
+Prepsat cestu k venv jde promennou ESPTOOL_VENV.
+
+prostredi pro -e v <repo>/firmware/testing_firmware:
+ * menu                 Vychozi prostredi: vsechny testy + menu na konzoli.
+   t00_chip_info        hlasi se cip, sedi flash/PSRAM varianta
+                          potreba: jen USB
+   t01_blink_io38       GPIO vystup na pinu J4
+                          potreba: LED+330R nebo multimetr
+   t02_shift_register   74HC595 budi DIR a EN
+                          potreba: sonda na patky BOB
+   t03_step_pins        STEP pulsy na IO4..IO7
+                          potreba: osciloskop
+   t04_endswitches      koncove spinace IO13..IO16
+                          potreba: spinace, ruka
+   t05_i2c_scan         TCA9548A a kanaly enkoderu
+                          potreba: nic / enkodery
+   t06_tmc_uart         drivery odpovidaji na UART
+                          potreba: osazene BOB-0..3
+   t07_wiring_selftest  DIR/EN/STEP overene ctenim IOIN
+                          potreba: osazene BOB-0..3
+   t08_motor_move       skutecny pohyb jednoho motoru
+                          potreba: 24 V + motor   POZOR: hybe motorem
+   t09_motor_jog        pusteni motoru a jednoduche pohyby po krocich
+                          potreba: 24 V + motor   POZOR: hybe motorem
+   * = default_envs, pouzije se bez -e
+```
+
+Bez `-d` se seznam bere z aktuálního adresáře; spuštěný z kořene repa vypíše všechny projekty vedle
+skriptu (`testing_firmware` i `test_simple`).
+
 ### Konzole je po připojení prázdná — tak to má být
 
 Deska **nemá USB-UART převodník**, konzole je nativní USB CDC. Cokoli vypsaného dřív, než hostitel
@@ -66,7 +132,7 @@ uvidíš buď výzvu, nebo celé menu.
 
 ```
 test> 0        spustí jeden test podle čísla
-test> a        spustí 00–07 za sebou (T08 vynechá, motory se nehýbou)
+test> a        spustí za sebou všechny testy, které nehýbou motorem (T08 a T09 vynechá)
 test> ?        znovu vypíše menu
 ```
 
@@ -97,7 +163,7 @@ překládá, vyžaduje vyjmenovat prostředí:
 ```bash
 pio run -e menu -e t00_chip_info -e t01_blink_io38 -e t02_shift_register -e t03_step_pins \
         -e t04_endswitches -e t05_i2c_scan -e t06_tmc_uart -e t07_wiring_selftest \
-        -e t08_motor_move
+        -e t08_motor_move -e t09_motor_jog
 ```
 
 Překlad všech prostředí je jediná automatická kontrola v repu — žádná sada testů na hostiteli ani CI
@@ -123,6 +189,35 @@ Každý test předpokládá, že ty před ním prošly. Autoritativní seznam je
 | 06 | `tmc_uart` | všechny čtyři drivery odpovídají, `VERSION = 0x21`, adresace MS1/MS2 | osazené BOB-0…3 | ❌ |
 | 07 | `wiring_selftest` | zapojení DIR/EN/STEP, **ověřené automaticky** | osazené BOB-0…3 | ❌ |
 | 08 | `motor_move` | motor se skutečně otáčí | 24 V + motor, volná mechanika | ❌ |
+| 09 | `motor_jog` | pustí motor a jede jednoduché pohyby zadané v krocích | 24 V + motor, volná mechanika | ❌ |
+
+**T09 je ten, ve kterém se sedí nejvíc.** T08 odpoví na „otočí se to vůbec“; T09 nechá driver
+nastavený a povolený a pohyby se zadávají z konzole, všechno v **krocích** (krok = jeden mikrokrok
+při nastaveném rozlišení — při 1/16 je otáčka 200krokového motoru 3200 kroků). Výchozí je motor ve
+**slotu 03**, ten zapojený na oživování. Na začátku se ptá na motor, `IRUN`, mikrokrok, počet kroků
+na jeden pohyb a kroky za sekundu.
+
+| klávesa | co udělá |
+|---|---|
+| `f` / `b` | ujede nastavený počet kroků, směr A / B |
+| `F` / `B` | jeden krok, směr A / B (dokrokování) |
+| `n` | jednorázově zadaný počet kroků a směr |
+| `d` / `v` | změní počet kroků na pohyb / rychlost v krocích za sekundu |
+| `+` / `-` | rychlost ±25 % |
+| `t` | tam a zpět 3× — vůle a ztracené kroky |
+| `c` / `C` | plynulá jízda směr A / B, dokud nestiskneš klávesu |
+| `s` | rampa: rozjezd na 2× rychlost a dojezd |
+| `a` / `u` | změní proud `IRUN` / mikrokrok |
+| `m` | přepne motor (starý driver se nejdřív pustí) |
+| `0` | vynuluje čítač polohy — „tady je start“ |
+| `i` | stav driveru (`DRV_STATUS`, `IOIN`, `IFCNT`) a úroveň koncového spínače |
+| `r` | konec a spuštění testu znovu od začátku (nové parametry) |
+| `x` | konec — driver se zakáže a test se vyhodnotí |
+
+Čítač polohy jde v krocích od startu (`+` = směr A) a vypisuje se po každém pohybu, takže symetrický
+pohyb, který skončí mimo značku, je přímo počet ztracených kroků. Koncový spínač vybraného motoru
+jízdu zastaví — ale jen když je v klidu v H; když na vstupu nic není, hlídání se vypne a jedinou
+pojistkou je klávesa.
 
 **T07 je ten, který se vyplatí pochopit.** Registr `IOIN` v TMC2209 čte zpátky úrovně vlastních
 vstupních pinů DIR / ENN / STEP, takže firmware může nastavit úroveň přes posuvný registr nebo GPIO
@@ -139,8 +234,10 @@ stojícími motory. Místo dalšího testu typu „přilož sondu a koukej“ ra
   vždycky pošle známý bezpečný bajt.
 - T02 postupně krátce povolí každý driver (držný moment, odběr proudu) a předem se zeptá. T03 a T07
   drží všechny drivery zakázané, takže se nic nepohne ani při připojených 24 V.
-- **Motorem hýbe jen T08.** Ptá se na motor, počet kroků, rychlost a proud `IRUN` a nerozjede se,
-  dokud nepotvrdíš, že je mechanika volná. Sekvenční režim (`a`) ho vynechává.
+- **Motorem hýbe jen T08 a T09.** Oba se ptají na motor, počet kroků, rychlost a proud `IRUN`
+  a nerozjedou se, dokud nepotvrdíš, že je mechanika volná; T09 navíc zastaví na koncovém spínači
+  vybraného motoru a na stisk klávesy. Oba mají v `src/test_registry.cpp` příznak `moves_motor`
+  a sekvenční režim (`a`) vynechává všechno, co ho nese.
 - Na desce **není žádná softwarově řiditelná LED** (LED1 visí na PG výstupu LT8610 přes NPN). IO38
   je vyvedený jen na jednopinovou lištu J4.
 

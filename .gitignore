@@ -13,3 +13,7 @@ fp-info-cache
 credentials.md
 credentials
 credentials.*
+
+# Claude Code settings — machine-specific (permissions, local paths)
+**/.claude/settings.json
+**/.claude/settings.local.json

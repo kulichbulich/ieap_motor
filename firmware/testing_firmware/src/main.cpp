@@ -71,11 +71,18 @@ void print_menu() {
   for (size_t i = 0; i < TEST_COUNT; ++i) {
     Serial.printf(" %2u  %-20s %s\r\n", static_cast<unsigned>(i),
                   TESTS[i].name, TESTS[i].desc);
-    Serial.printf("     %-20s   potreba: %s\r\n", "", TESTS[i].needs);
+    Serial.printf("     %-20s   potreba: %s%s\r\n", "", TESTS[i].needs,
+                  TESTS[i].moves_motor ? "   POZOR: hybe motorem" : "");
   }
   Serial.println();
-  Serial.println(F("  a   spustit 00-07 za sebou (bez pohybu motoru)"));
-  Serial.println(F("  ?   znovu vypsat menu"));
+  Serial.printf(" 0-%-2u             spustit jeden test podle cisla\r\n",
+                static_cast<unsigned>(TEST_COUNT - 1));
+  Serial.println(F("  a               spustit za sebou vsechny testy, ktere nehybou motorem"));
+  Serial.println(F("  h, ? nebo Enter vypsat tuhle napovedu znovu"));
+  Serial.println();
+  Serial.println(F("  Testy jsou interaktivni: ptaji se na parametry (Enter vezme hodnotu"));
+  Serial.println(F("  v hranatych zavorkach) a na to, co jsi videl. Test, ktery bezi ve"));
+  Serial.println(F("  smycce, se ukonci stiskem klavesy."));
   Serial.println();
 }
 
@@ -90,7 +97,7 @@ void run_one(size_t i) {
 void run_sequence() {
   uint16_t failed_tests = 0;
   for (size_t i = 0; i < TEST_COUNT; ++i) {
-    if (TESTS[i].fn == &t08_motor_move) continue;  // pohyb jen rucne
+    if (TESTS[i].moves_motor) continue;  // pohyb motorem jen rucne
     run_one(i);
     if (tk::fail_count() > 0) {
       ++failed_tests;
@@ -115,7 +122,7 @@ void setup() {
 void loop() {
   Serial.print(F("test> "));
   tk::flush_input();
-  wait_for_input("[deska ceka na vyber - stisknij Enter pro vypis menu]");
+  wait_for_input("[deska ceka na vyber - 'h' nebo Enter vypise napovedu]");
 
   // Precti cislo (jedna nebo dve cislice) nebo prikaz.
   char buf[8];
@@ -134,7 +141,9 @@ void loop() {
   buf[n] = '\0';
   Serial.println(buf);
 
-  if (n == 0 || buf[0] == '?') {
+  // Napoveda: '?', 'h', 'help' i prazdny Enter. Je to jediny prikaz, ktery
+  // clovek potrebuje uhadnout, takze bere vsechno, co ho muze napadnout.
+  if (n == 0 || buf[0] == '?' || buf[0] == 'h' || buf[0] == 'H') {
     print_menu();
     return;
   }
@@ -146,8 +155,9 @@ void loop() {
   char* end = nullptr;
   const long idx = strtol(buf, &end, 10);
   if (end == buf || idx < 0 || static_cast<size_t>(idx) >= TEST_COUNT) {
-    Serial.printf("neznamy vyber '%s', platne je 0-%u, 'a' nebo '?'\r\n", buf,
-                  static_cast<unsigned>(TEST_COUNT - 1));
+    Serial.printf("neznamy vyber '%s', platne je 0-%u, 'a' nebo 'h' "
+                  "(napoveda)\r\n",
+                  buf, static_cast<unsigned>(TEST_COUNT - 1));
     return;
   }
   run_one(static_cast<size_t>(idx));

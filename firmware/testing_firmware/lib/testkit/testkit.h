@@ -92,11 +92,18 @@ class TmcBus {
   // Kolik ctecich pokusu selhalo od begin() - hrube merítko kvality linky.
   uint32_t errors() const { return errors_; }
 
+  // Slysel ESP32 pri poslednim prenosu vlastni vysilani? Na jednodratove
+  // sbernici se vysilane bajty vraci zpatky pres R19 bez ohledu na to, jestli
+  // je nejaky driver osazeny a napajeny. "Ne" tedy znamena vadnou TX/RX cestu,
+  // ne mlcici driver - to ty dve pricine oddeli.
+  bool echo_seen() const { return echo_seen_; }
+
  private:
-  void discard_echo(size_t n);
+  bool discard_echo(size_t n);
   bool read_exact(uint8_t* buf, size_t n, uint32_t timeout_ms);
 
   uint32_t errors_ = 0;
+  bool echo_seen_ = false;
 };
 
 // Dekodery pro citelny vypis.

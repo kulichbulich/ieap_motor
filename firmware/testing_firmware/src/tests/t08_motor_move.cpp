@@ -43,7 +43,8 @@ void t08_motor_move() {
   }
   bus.begin(115200);
 
-  const int m = tk::read_int("ktery motor", 0, 3, 0);
+  // Vychozi je slot 03 (ctvrty motor) - na nem se testuje jako na prvnim.
+  const int m = tk::read_int("ktery motor", 0, 3, 3);
   const int steps = tk::read_int("pocet kroku", 1, 100000, 400);
   const int rate = tk::read_int("kroku za sekundu", 10, 20000, 800);
   const int irun = tk::read_int("proud IRUN (0-31, vetsi = silnejsi)", 0, 31, 8);
