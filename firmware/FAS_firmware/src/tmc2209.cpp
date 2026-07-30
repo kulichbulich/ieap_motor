@@ -195,24 +195,32 @@ bool Tmc2209::configure(uint16_t run_ma, uint8_t hold_pct, uint16_t microsteps) 
   if (ihold_calc < 0) ihold_calc = 0;
   const uint32_t ihold = static_cast<uint32_t>(ihold_calc);
 
+  // CHOPCONF jde PRVNI, a to zamerne (viz firmware/TMC2209_MS1_MS2.md,
+  // HW-00201): dokud je GCONF bit7 (mstep_reg_select) nula, bere driver
+  // mikrokrok z pinu MS1/MS2. V okamziku, kdy se ten bit prehodi, zacne platit
+  // hodnota v registru - takze v nem uz musi byt ta spravna. V obracenem
+  // poradi by driver mezitim jel podle toho, co v MRES zbylo (po resetu 0,
+  // tedy 1/256), a na stejny pocet pulzu by se hridel otocila 16x mene.
+  //
+  // Cteme a menime jen dva udaje - MRES a vsense. Ostatni bity (TOFF, TBL,
+  // hystereze, intpol) zustavaji, jak je nastavil driver sam.
+  chop = (chop & ~(0xFUL << 24)) |
+         (static_cast<uint32_t>(mres_code(usteps)) << 24);
+  chop = vsense ? (chop | (1UL << 17)) : (chop & ~(1UL << 17));
+  write_reg(TMC_CHOPCONF, chop);
+
   // GCONF, tri bity zamerne a zbytek na nulu:
   //   bit6 pdn_disable=1     UART ma prednost pred PDN pinem (jinak driver
   //                          povazuje sbernici za "power down" signal)
   //   bit7 mstep_reg_select=1 mikrokrok z registru - MS1/MS2 tady drzi adresu
   //   bit8 multistep_filt=1   filtr STEP vstupu, datasheet ho doporucuje pri
   //                          externim zdroji kroku (a je to vychozi stav)
-  // Nula na bit0 (I_scale_analog) je taky rozhodnuti: proud rididi jen registr
-  // IRUN, ne trimr VREF na modulu. Bit2 (en_spreadCycle) nula = stealthChop.
-  // Pozn.: ../testing_firmware pise 0xC0, tedy bez filtru STEP.
+  // Nula na bit0 (I_scale_analog) NENI opomenuti, ale rozhodnuti: s jednickou
+  // by proud skaloval pin VREF a prepocet mA -> CS by nic neznamenal. Modul
+  // driveru VREF na tehle desce ani nevyvadi. Bit2 (en_spreadCycle) nula =
+  // stealthChop. Pozn.: ../testing_firmware pise 0xC0, tedy bez filtru STEP.
   write_reg(TMC_GCONF, (1UL << 6) | (1UL << 7) | (1UL << 8));
   write_reg(TMC_TPOWERDOWN, TPOWERDOWN);
-
-  // CHOPCONF cteme a menime jen dva udaje - MRES a vsense. Ostatni bity
-  // (TOFF, TBL, hysterze, intpol) zustavaji, jak je nastavil driver sam.
-  chop = (chop & ~(0xFUL << 24)) |
-         (static_cast<uint32_t>(mres_code(usteps)) << 24);
-  chop = vsense ? (chop | (1UL << 17)) : (chop & ~(1UL << 17));
-  write_reg(TMC_CHOPCONF, chop);
 
   write_reg(TMC_IHOLD_IRUN, (ihold & 0x1F) |
                                 (static_cast<uint32_t>(irun) << 8) |
