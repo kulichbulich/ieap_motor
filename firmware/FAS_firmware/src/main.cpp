@@ -238,6 +238,49 @@ bool bring_up() {
   return true;
 }
 
+// Registry driveru jsou volatilni - zijou jen dokud ma driver VM. Po vypadku
+// 24 V nabehne s vychozimi hodnotami: mikrokrok zase z pinu MS1/MS2 (viz
+// firmware/TMC2209_MS1_MS2.md, HW-00201), IRUN na vychozich 23 a I_scale_analog
+// zpatky na jednicce, tedy proud podle VREF. Nic z toho neni videt na
+// DRV_STATUS - jediny zpusob, jak to firmware pozna, je GSTAT bit 0 (reset).
+//
+// Vraci false, kdyz se ma cyklus prerusit: po rekonfiguraci nebo pri haltu.
+bool driver_survived() {
+  uint32_t gstat = 0;
+  if (!drv.read_and_clear_gstat(&gstat)) return true;  // vypadek sbernice resi volajici
+
+  if (gstat & 0x04) {
+    logln("[WARN] GSTAT: uv_cp - podpeti nabojove pumpy, nejspis vypadlo 24 V");
+  }
+  if ((gstat & 0x02) && !(gstat & 0x01)) {
+    logln("[WARN] GSTAT: drv_err - driver se vypnul chybou");
+  }
+  if (!(gstat & 0x01)) return true;  // zadny reset, konfigurace plati dal
+
+  logln("[WARN] driver se restartoval (GSTAT.reset) - konfigurace je pryc:");
+  logln("       mikrokrok by se vratil na pinovy z MS1/MS2 a proud na vychozi.");
+
+  // Rekonfigurovat se musi se zakazanym driverem: dokud registry drzi vychozi
+  // hodnoty, tece do motoru proud, ktery jsme nezadali.
+  mot.enable(false);
+  if (!drv.configure(fas::RUN_CURRENT_MA, fas::HOLD_CURRENT_PCT,
+                     fas::MICROSTEPS)) {
+    logln("znovunastaveni driveru neproslo (%lu chyb cteni na sbernici)",
+          static_cast<unsigned long>(drv.bus_errors()));
+    halt("driver se restartoval a nelze ho znovu nastavit");
+    return false;
+  }
+  print_driver_config();
+
+  // Behem vypadku napajeni se hridel mohla protocit a citac kroku uz nerika
+  // nic o tom, kde doopravdy je. Nulou se prizna, ze je to novy start.
+  mot.zero();
+  mot.enable(true);
+  logln("driver znovu nastaven, citac polohy vynulovan - znacka na hrideli"
+        " uz nesedi, jede se dal od tady");
+  return false;
+}
+
 // Jeden pohyb. false = cyklus se ma prerusit (halt nebo pauza od operatora).
 bool do_move(int32_t steps) {
   const char* dir = (steps >= 0) ? "A" : "B";
@@ -248,6 +291,11 @@ bool do_move(int32_t steps) {
         static_cast<unsigned long>(mot.last_ms()),
         static_cast<unsigned long>(mot.last_rate()),
         static_cast<long>(mot.position()));
+
+  // Jestli driver po celou dobu pohybu drzel nasi konfiguraci. Kontroluje se
+  // po kazdem pohybu, ne raz za cyklus - jinak by druhy pohyb v cyklu jel
+  // s vychozim proudem a mikrokrokem, nez by si toho firmware vsiml.
+  if (!driver_survived()) return false;
 
   fas::DrvStatus st;
   if (!drv.read_status(&st)) {
