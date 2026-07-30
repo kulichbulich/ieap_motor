@@ -1,5 +1,5 @@
 # FAS firmware — pohyb tam a zpět
-@doc_pwc: file:README.md | id:HW-00176 | created:2026-07-30 | rev:1 | revised:2026-07-30_1410 | type:MAN
+@doc_pwc: file:README.md | id:HW-00176 | created:2026-07-30 | rev:2 | revised:2026-07-30_1802 | type:MAN
 
 Nejjednodušší **aplikační** firmware desky `esp32stepper` (ESP32-S3-WROOM-2 N32R16V + 4× TMC2209
 SilentStepStick). Po zapnutí nastaví jeden driver po UART, povolí ho a pak už jen pořád dokola jede
@@ -77,6 +77,25 @@ Dvě věci, které z toho plynou:
   proudy o ten podíl vedle — ověřit ampérmetrem, ne z datasheetu klonu.
 * Strop je **1768 mA RMS** (CS=31, `vsense=0`). Vyšší zadání se do něj utne, `SilentStepStick`
   bez chladiče na to ale stejně není.
+
+### MS1/MS2 dělají adresu i mikrokrok
+
+Na této desce mají `MS1`/`MS2` dvě funkce najednou: pull-upy `R13..R16` jim dávají UART adresu, a tím
+zároveň každé patici jiné rozlišení mikrokroku (BOB-0 = 1/8, BOB-1 = 1/2, BOB-2 = 1/4, BOB-3 = 1/16).
+Podrobně [../TMC2209_MS1_MS2.md](../TMC2209_MS1_MS2.md) (HW-00201). Firmware to řeší takto:
+
+* `CHOPCONF.MRES` se zapisuje **před** `GCONF` bitem 7 (`mstep_reg_select`) — v okamžiku, kdy se
+  řízení přebírá z pinů do registru, už v registru musí být správná hodnota. V obráceném pořadí by
+  driver mezitím jel podle toho, co v `MRES` zbylo (po resetu 1/256).
+* `GCONF` bit 0 (`I_scale_analog`) firmware **záměrně nuluje** — s jedničkou by proud škáloval pin
+  `VREF` a přepočet mA → CS by nic neznamenal. Modul driveru `VREF` na této desce ani nevyvádí
+  (symbol v `PCB/tmc2209_driver.kicad_sch` má 17 pinů a `VREF` mezi nimi není). Tohle je jediné
+  místo, kde se firmware odchyluje od doporučení HW-00201 (čti-uprav-zapiš celého `GCONF`).
+* **`GSTAT` bit 0 se čte po každém pohybu.** Registry driveru jsou volatilní — po výpadku 24 V
+  naběhne s výchozími hodnotami (mikrokrok zpátky z pinů, `IRUN` = 23, `I_scale_analog` = 1) a na
+  `DRV_STATUS` to není vidět. Když firmware reset zachytí, driver zakáže, znovu nastaví, vynuluje
+  počítadlo polohy (hřídel se během výpadku mohla protočit) a jede dál. Když se znovunastavení
+  nepovede, jde do `HALT`.
 
 ## Výpis na konzoli
 
