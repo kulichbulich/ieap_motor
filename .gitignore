@@ -8,3 +8,8 @@ fp-info-cache
 *.lck
 *~
 .DS_Store
+
+# Real hardware identifiers (MAC, chip unique ID) — never push these
+credentials.md
+credentials
+credentials.*

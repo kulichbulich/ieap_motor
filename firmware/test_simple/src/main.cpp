@@ -41,7 +41,7 @@ void setup() {
 
 void loop() {
   static uint32_t n = 0;
-  say(String("ALIVE #") + (++n) + "  uptime " + (millis() / 1000) + " s");
+  say(String("jo jsem nazivu #") + (++n) + "  uptime " + (millis() / 1000) + " s");
 
   // Overeni, ze funguje i prijem - proklepne druhy smer dratu.
   while (Serial.available()) say(String("USB  RX: ") + (char)Serial.read());

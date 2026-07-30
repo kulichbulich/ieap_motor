@@ -4,7 +4,7 @@ Test suite for the custom 4-channel stepper board (ESP32-S3-WROOM-2 + 4× TMC220
 SilentStepStick). **This is not application firmware** — it is a ladder of tests that prove the
 board works, one subsystem at a time.
 
-Czech version of this document: [README_CZ_.md](README_CZ.md)
+Czech version of this document: [README_CZ.md](README_CZ.md)
 
 ---
 
@@ -23,6 +23,12 @@ run.
 
 The two validated tests were run on an **ESP32-S3-DevKitC-1 N8R2**, not on the target board.
 
+> **The DevKit and the target board now need different memory settings.** The target module is
+> confirmed to be an **ESP32-S3-WROOM-2 N32R16V** (32 MB octal flash + 16 MB octal PSRAM, 1.8 V),
+> and `platformio.ini` is configured octal for it. That config **will not boot on the N8R2 DevKit**,
+> which has quad flash. Flip `flash_mode`/`memory_type`/`flash_size` back to `dout` + `qio_qspi` +
+> `8MB` when returning to the DevKit. See [../report.md](../report.md).
+
 ---
 
 ## Requirements
@@ -32,7 +38,7 @@ The two validated tests were run on an **ESP32-S3-DevKitC-1 N8R2**, not on the t
 - USB-C cable to the board's **USB1** connector (native USB CDC on IO19/IO20)
 - 24 V on the barrel jack only for T06 (optional) and T08 (required)
 
-All commands below run from this directory (`firmware/platformio/`).
+All commands below run from this directory (`firmware/testing_firmware/`).
 
 ## Quick start
 
@@ -42,6 +48,11 @@ pio run -e menu -t upload && pio device monitor
 
 That flashes a binary containing every test plus an interactive menu, then opens the console. This
 is the usual flow — you flash once and pick tests over USB, without reprogramming between them.
+
+> **`-t upload` is unreliable on the target board.** PlatformIO bundles esptool 4.5.1, which dies
+> with `BrokenPipeError: [Errno 32] Broken pipe` on this board's octal flash over native
+> USB-Serial/JTAG — especially while the chip is resetting. Build with `pio run` and flash with a
+> **standalone esptool 5.3.1**; the exact command is in [../report.md](../report.md).
 
 ### The console starts blank — that is normal
 
@@ -148,9 +159,11 @@ pad-by-pad against `PCB/esp32stepper.kicad_pcb`.
 | Debug UART TX / RX (header J5) | 2 / 1 |
 | Spare (header J4) | 38 |
 
-Two other sources in this repo disagree and are **wrong for this board** — never copy pin numbers
-from them: the table in `firmware/README.md`, and all of `firmware/*.py` (legacy MicroPython
-scripts written from a guess at the schematic, before the board existed).
+Historically two other sources in this repo disagreed and were wrong for this board: a table in
+`firmware/README.md` and a set of legacy MicroPython `firmware/*.py` scripts written from a guess at
+the schematic, before the board existed. **Neither is in the repo as of 2026-07-30** — `firmware/`
+holds only `testing_firmware/` and `test_simple/`. If either ever reappears, do not copy pin numbers
+from it.
 
 The DIR/EN bit order in the shift register is **interleaved, not blocked**: writing MSB-first,
 `bit0→QA=dir0, bit1→QB=en0, bit2→QC=dir1, bit3→QD=en1, …`. Use `SR_BIT_DIR[]` / `SR_BIT_EN[]`,
@@ -162,21 +175,35 @@ never hand-rolled shifts.
 whether the USB *cable* is plugged in, so the firmware cannot detect your terminal attaching.
 
 **Boot loops with `E cpu_start: Octal Flash option selected, but EFUSE not configured!`**
-Someone set `flash_mode = opi` / `memory_type = opi_opi` on a module with quad flash. Revert to the
-committed quad settings. `platformio.ini` deliberately configures the quad common denominator
-(`dio`, `qio_qspi`, 8 MB, `default_8MB.csv`) because the BOM does not state the module's memory
-variant; this boots on every S3 variant, including a module that does have octal memories. T00
-reports the flash size actually found.
+An octal config (`memory_type = opi_opi`) is running on a module with **quad** flash — typically the
+ESP32-S3-DevKitC-1 N8R2. Switch to `dout` + `qio_qspi` + `8MB` + `default_8MB.csv` for that DevKit.
+
+**Boot loops with `assert failed: do_core_init startup.c:328 (flash_ret == ESP_OK)`**
+The mirror image of the above, and this README used to claim it could not happen: a **quad** config
+on the **octal** target module. The ROM reads the efuse and enables OPI (`Octal Flash Mode Enabled`
+appears in the boot log), the quad-built app then fails to init the flash and aborts. Use the
+committed octal settings (`dout`, `opi_opi`, `32MB`, `default_16MB.csv`).
+
+There is **no quad/octal common denominator** — the two boards genuinely need different settings.
+T00 reports the flash size actually found.
 
 **T00 warns that PSRAM was not found.** A `warn`, not a `fail` — no test in the ladder needs PSRAM.
-It means the module is not an R* variant, or it has octal PSRAM (which the quad config leaves
-unused).
+On the target N32R16V module there are 16 MB of octal PSRAM and `-DBOARD_HAS_PSRAM` is set, so a
+warning here means something is genuinely off. On the N8R2 DevKit with a quad config it is expected.
 
 **T00 reports a brownout reset.** Power supply is inadequate or sagging — fix that before running
 anything that enables a driver.
 
-**Upload cannot find the port.** `pio device list` to see what is there. The board has a `BOOT1`
-tactile switch but no reset button; hold `BOOT1` while plugging USB in to force download mode.
+**Upload cannot find the port.** `pio device list` to see what is there. Hold `BOOT1` while plugging
+USB in to force download mode. (The board's reset/BOOT hardware is not fully documented — the BOM
+lists only `SW1`, which the schematic draws as an SPDT power switch, plus a 2-pin header `J1`.
+Verify against the schematic before relying on a particular button.)
+
+**`Failed to communicate with the flash chip` / `Manufacturer: 00`, or writes that verify as empty.**
+Two separate flash-level faults, both recoverable and both explained step by step with commands in
+[../report.md](../report.md): the flash left stuck in OPI mode (needs a full power removal — USB
+*and* the barrel jack), and block-protect bits set in the flash status register (needs
+`esptool write-flash-status`). Neither means the module is dead.
 
 **UART0 (IO43/IO44) is physically unconnected.** Never route logging there — it goes nowhere on
 this board.
@@ -214,4 +241,5 @@ src/test_registry.*     the list the menu prints
 src/tests/tNN_*.cpp     one test per file
 ```
 
-See `../../CLAUDE.md` for the hardware facts that constrain this firmware.
+See [../report.md](../report.md) for the hardware facts that constrain this firmware — module
+variant, memory settings, and the flashing procedure.

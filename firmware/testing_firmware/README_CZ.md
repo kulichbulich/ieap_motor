@@ -22,6 +22,12 @@ na kód, který si před prvním spuštěním zaslouží revizi.
 
 Ty dva odladěné testy běžely na **ESP32-S3-DevKitC-1 N8R2**, ne na cílové desce.
 
+> **DevKit a cílová deska teď potřebují jiné nastavení pamětí.** Varianta cílového modulu je
+> potvrzená: **ESP32-S3-WROOM-2 N32R16V** (32 MB oktální flash + 16 MB oktální PSRAM, 1,8 V) a
+> `platformio.ini` je pro ni nastavené oktálně. Tahle konfigurace **na DevKitu N8R2 nenabootuje**,
+> protože ten má quad flash. Při návratu na DevKit přepni `flash_mode`/`memory_type`/`flash_size`
+> zpátky na `dout` + `qio_qspi` + `8MB`. Viz [../report.md](../report.md).
+
 ---
 
 ## Co je potřeba
@@ -31,7 +37,7 @@ Ty dva odladěné testy běžely na **ESP32-S3-DevKitC-1 N8R2**, ne na cílové 
 - kabel USB-C do konektoru **USB1** na desce (nativní USB CDC na IO19/IO20)
 - 24 V na barrel jack až pro T06 (nepovinně) a T08 (povinně)
 
-Všechny příkazy níže se spouští z této složky (`firmware/platformio/`).
+Všechny příkazy níže se spouští z této složky (`firmware/testing_firmware/`).
 
 ## Rychlý start
 
@@ -41,6 +47,11 @@ pio run -e menu -t upload && pio device monitor
 
 Nahraje binárku, která obsahuje všechny testy plus interaktivní menu, a otevře konzoli. To je běžný
 režim — nahraje se jednou a testy se pak vybírají po USB, bez přeprogramování mezi nimi.
+
+> **`-t upload` na cílové desce nefunguje spolehlivě.** PlatformIO má v sobě esptool 4.5.1, který na
+> oktální flash přes nativní USB-Serial/JTAG padá na `BrokenPipeError: [Errno 32] Broken pipe`,
+> zvlášť když se čip zároveň resetuje. Přelož přes `pio run` a nahraj **samostatným esptoolem
+> 5.3.1**; přesný příkaz je v [../report.md](../report.md).
 
 ### Konzole je po připojení prázdná — tak to má být
 
@@ -148,9 +159,10 @@ padu proti `PCB/esp32stepper.kicad_pcb`.
 | Debug UART TX / RX (lišta J5) | 2 / 1 |
 | Volný pin (lišta J4) | 38 |
 
-Dva další zdroje v repu s tímhle nesouhlasí a **pro tuhle desku jsou špatné** — nikdy z nich
-neopisuj čísla pinů: tabulka ve `firmware/README.md` a všechny `firmware/*.py` (staré MicroPython
-skripty psané podle odhadu schématu, ještě než deska existovala).
+Historicky s tímhle nesouhlasily dva další zdroje v repu a pro tuhle desku byly špatné: tabulka ve
+`firmware/README.md` a staré MicroPython skripty `firmware/*.py`, psané podle odhadu schématu ještě
+než deska existovala. **Ani jedno v repu k 2026-07-30 není** — `firmware/` obsahuje jen
+`testing_firmware/` a `test_simple/`. Kdyby se někdy vrátily, čísla pinů z nich neopisuj.
 
 Pořadí bitů DIR/EN v posuvném registru je **proložené, ne blokové**: při zápisu MSB-first
 `bit0→QA=dir0, bit1→QB=en0, bit2→QC=dir1, bit3→QD=en1, …`. Používej `SR_BIT_DIR[]` / `SR_BIT_EN[]`,
@@ -162,20 +174,36 @@ nikdy ruční posuvy.
 to, jestli je zapojený USB *kabel*, takže firmware připojení terminálu nedokáže detekovat.
 
 **Deska se restartuje ve smyčce s `E cpu_start: Octal Flash option selected, but EFUSE not
-configured!`** Někdo nastavil `flash_mode = opi` / `memory_type = opi_opi` na modulu s quad flash.
-Vrať commitnuté quad nastavení. `platformio.ini` záměrně konfiguruje quad společný jmenovatel
-(`dio`, `qio_qspi`, 8 MB, `default_8MB.csv`), protože BOM neuvádí paměťovou variantu modulu; takhle
-to nabootuje na každé variantě S3 včetně modulu, který octal paměti opravdu má. Skutečně nalezenou
-velikost flash vypíše T00.
+configured!`** Oktální konfigurace (`memory_type = opi_opi`) běží na modulu s **quad** flash,
+typicky na ESP32-S3-DevKitC-1 N8R2. Pro ten DevKit přepni na `dout` + `qio_qspi` + `8MB` +
+`default_8MB.csv`.
+
+**Deska se restartuje ve smyčce s `assert failed: do_core_init startup.c:328 (flash_ret == ESP_OK)`**
+Zrcadlový případ toho výše — a tenhle README dřív tvrdil, že nastat nemůže: **quad** konfigurace na
+**oktálním** cílovém modulu. ROM podle efuse zapne OPI (v boot logu se objeví `Octal Flash Mode
+Enabled`) a aplikace přeložená pro quad pak neinicializuje flash a spadne. Použij commitnuté oktální
+nastavení (`dout`, `opi_opi`, `32MB`, `default_16MB.csv`).
+
+Žádný **quad/oktální společný jmenovatel neexistuje** — ty dvě desky opravdu potřebují jiné
+nastavení. Skutečně nalezenou velikost flash vypíše T00.
 
 **T00 hlásí, že nenašel PSRAM.** Je to `warn`, ne `fail` — žádný test v žebříku PSRAM nepotřebuje.
-Znamená to, že modul není varianta R*, nebo má octal PSRAM (kterou quad konfigurace nevyužije).
+Na cílovém modulu N32R16V je 16 MB oktální PSRAM a `-DBOARD_HAS_PSRAM` je nastavené, takže tam tohle
+varování znamená, že něco skutečně nehraje. Na DevKitu N8R2 s quad konfigurací je očekávané.
 
 **T00 hlásí reset kvůli brownoutu.** Napájení nestačí nebo kolísá — sprav to, než pustíš cokoli, co
 povoluje driver.
 
-**Upload nenajde port.** `pio device list` ukáže, co v systému je. Deska má tlačítko `BOOT1`, ale
-žádné reset tlačítko; download režim vynutíš tím, že držíš `BOOT1` a zapojíš USB.
+**Upload nenajde port.** `pio device list` ukáže, co v systému je. Download režim vynutíš tím, že
+držíš `BOOT1` a zapojíš USB. (Reset/BOOT hardware desky není spolehlivě zdokumentovaný — BOM uvádí
+jen `SW1`, který schéma kreslí jako napájecí SPDT přepínač, plus dvoupinovou lištu `J1`. Než se
+spolehneš na konkrétní tlačítko, ověř si to ve schématu.)
+
+**`Failed to communicate with the flash chip` / `Manufacturer: 00`, nebo zápis, který se ověří jako
+prázdný.** Dvě různé závady na úrovni flash, obě opravitelné a obě popsané krok za krokem včetně
+příkazů v [../report.md](../report.md): flash zaseknutá v OPI režimu (chce úplné odpojení napájení —
+USB *i* barrel jack) a nastavené block-protect bity ve status registru (chce
+`esptool write-flash-status`). Ani jedno neznamená, že je modul mrtvý.
 
 **UART0 (IO43/IO44) není fyzicky zapojený.** Nikdy tam nesměruj logování — na téhle desce nevede
 nikam.
@@ -213,4 +241,5 @@ src/test_registry.*     seznam, který vypisuje menu
 src/tests/tNN_*.cpp     jeden test na soubor
 ```
 
-Hardwarová fakta, která tenhle firmware svazují, jsou v `../../CLAUDE.md`.
+Hardwarová fakta, která tenhle firmware svazují — varianta modulu, nastavení pamětí a postup
+nahrávání — jsou v [../report.md](../report.md).
