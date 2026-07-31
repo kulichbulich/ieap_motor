@@ -13,6 +13,7 @@
 
 #include <Arduino.h>
 
+#include "status_led.h"
 #include "testkit.h"
 
 namespace {
@@ -26,6 +27,7 @@ void show(const char* what) {
 }  // namespace
 
 void t02_shift_register() {
+  status_led_pause();
   tk::reset_results();
   tk::banner("T02 - posuvny registr 74HC595");
 

@@ -11,6 +11,7 @@
 #include <esp_chip_info.h>
 #include <esp_system.h>
 
+#include "status_led.h"
 #include "testkit.h"
 
 namespace {
@@ -45,6 +46,7 @@ const char* reset_reason_name(esp_reset_reason_t r) {
 }  // namespace
 
 void t00_chip_info() {
+  status_led_pause();
   tk::reset_results();
   tk::banner("T00 - identifikace cipu");
 

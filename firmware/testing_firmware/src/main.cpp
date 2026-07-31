@@ -10,6 +10,7 @@
 
 #include <Arduino.h>
 
+#include "status_led.h"
 #include "testkit.h"
 
 #ifndef TEST_ENTRY
@@ -47,9 +48,11 @@ void wait_for_input(const char* hint) {
 extern void TEST_ENTRY();
 
 void setup() {
+  status_led_begin();
   tk::console_begin();
   tk::safe_state();
   TEST_ENTRY();
+  status_led_resume();
 }
 
 void loop() {
@@ -58,6 +61,7 @@ void loop() {
   tk::flush_input();
   tk::safe_state();
   TEST_ENTRY();
+  status_led_resume();
 }
 
 #else  // interaktivni menu
@@ -90,6 +94,7 @@ void run_one(size_t i) {
   Serial.println();
   tk::safe_state();
   TESTS[i].fn();
+  status_led_resume();
   tk::safe_state();
   Serial.println();
 }
@@ -114,6 +119,7 @@ void run_sequence() {
 }  // namespace
 
 void setup() {
+  status_led_begin();
   tk::console_begin();
   tk::safe_state();
   print_menu();

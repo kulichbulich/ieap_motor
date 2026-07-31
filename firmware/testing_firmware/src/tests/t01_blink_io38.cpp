@@ -11,9 +11,11 @@
 
 #include <Arduino.h>
 
+#include "status_led.h"
 #include "testkit.h"
 
 void t01_blink_io38() {
+  status_led_pause();
   tk::reset_results();
   tk::banner("T01 - blikani na IO38 (J4)");
 
