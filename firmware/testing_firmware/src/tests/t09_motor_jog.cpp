@@ -278,8 +278,9 @@ bool configure() {
     tk::fail("IFCNT nelze precist - zapisy pravdepodobne neprosly");
     return false;
   }
-  tk::pass("driver %u nastaven: %u mikrokroku, IRUN=%d, IFCNT=%lu", j.motor,
-           j.usteps, j.irun, static_cast<unsigned long>(ifcnt));
+  tk::pass("driver %u nastaven: %u mikrokroku, %u mA RMS (CS=%d), IFCNT=%lu",
+           j.motor, j.usteps, tk::ma_from_cs(static_cast<uint8_t>(j.irun)),
+           j.irun, static_cast<unsigned long>(ifcnt));
   return true;
 }
 
@@ -324,10 +325,11 @@ void status_dump() {
              static_cast<unsigned long>(v),
              static_cast<unsigned long>(bus.errors()));
   }
-  tk::info("motor %u (addr %u), %lu kroku na pohyb, %d kroku/s, IRUN=%d, "
-           "%u mikrokroku, poloha %+ld",
+  tk::info("motor %u (addr %u), %lu kroku na pohyb, %d kroku/s, %u mA RMS "
+           "(CS=%d), %u mikrokroku, poloha %+ld",
            j.motor, j.node, static_cast<unsigned long>(j.steps), j.rate,
-           j.irun, j.usteps, static_cast<long>(j.pos));
+           tk::ma_from_cs(static_cast<uint8_t>(j.irun)), j.irun, j.usteps,
+           static_cast<long>(j.pos));
   tk::info("koncovy spinac IO%u = %s%s", PIN_ENDSWITCH[j.motor],
            digitalRead(PIN_ENDSWITCH[j.motor]) ? "H (rozepnuto)" : "L (sepnuto)",
            j.guard ? "" : "   [hlidani vypnuto]");
@@ -345,7 +347,7 @@ void print_help() {
   Serial.println(F("   t        tam a zpet 3x - vule a ztracene kroky"));
   Serial.println(F("   c / C    plynula jizda smer A / B, konec klavesou"));
   Serial.println(F("   s        rampa: rozjezd na 2x rychlost a dojezd"));
-  Serial.println(F("   a        zmen proud IRUN"));
+  Serial.println(F("   a        zmen proud [mA]"));
   Serial.println(F("   u        zmen mikrokrok (1-256)"));
   Serial.println(F("   m        zmen motor (driver se prepne bezpecne)"));
   Serial.println(F("   0        vynuluj citac polohy (tady je start)"));
@@ -404,7 +406,12 @@ bool jog_session() {
   // Vychozi je slot 03 (ctvrty motor) - na nem se testuje jako na prvnim.
   j.motor = static_cast<uint8_t>(tk::read_int("ktery motor", 0, 3, 3));
   j.node = TMC_ADDR[j.motor];
-  j.irun = tk::read_int("proud IRUN (0-31, vetsi = silnejsi)", 0, 31, 8);
+  {
+    const int ma = tk::read_int("proud pri jizde [mA RMS]", 55, 1768, 500);
+    j.irun = tk::cs_from_ma(static_cast<uint16_t>(ma));
+    tk::info("%d mA -> CS=%d (skutecne %u mA RMS)", ma, j.irun,
+             tk::ma_from_cs(static_cast<uint8_t>(j.irun)));
+  }
   set_usteps(tk::read_int("mikrokroku na plny krok (1-256)", 1, 256, 16));
   j.steps = static_cast<uint32_t>(
       tk::read_int("kroku na jeden pohyb", 1, 200000, 400));
@@ -458,9 +465,10 @@ bool jog_session() {
   tk::section("jog");
   sr.set_enable(j.motor, true);
   delay(10);
-  tk::info("driver %u povolen - do motoru tece klidovy proud (IHOLD=%d), "
-           "hridel je drzena",
-           j.motor, j.irun / 2);
+  tk::info("driver %u povolen - do motoru tece klidovy proud ~%u mA RMS "
+           "(IHOLD=%d), hridel je drzena",
+           j.motor, tk::ma_from_cs(static_cast<uint8_t>(j.irun / 2)),
+           j.irun / 2);
   tk::info("udelej si znacku na hrideli, at je videt, kde je start");
   print_help();
 
@@ -514,10 +522,16 @@ bool jog_session() {
       case 's':
         ramp_demo();
         break;
-      case 'a':
-        j.irun = tk::read_int("proud IRUN (0-31)", 0, 31, j.irun);
+      case 'a': {
+        const int ma_now =
+            static_cast<int>(tk::ma_from_cs(static_cast<uint8_t>(j.irun)));
+        const int ma = tk::read_int("proud pri jizde [mA RMS]", 55, 1768, ma_now);
+        j.irun = tk::cs_from_ma(static_cast<uint16_t>(ma));
+        tk::info("%d mA -> CS=%d (skutecne %u mA RMS)", ma, j.irun,
+                 tk::ma_from_cs(static_cast<uint8_t>(j.irun)));
         configure();
         break;
+      }
       case 'u':
         set_usteps(tk::read_int("mikrokroku na plny krok (1-256)", 1, 256,
                                 j.usteps));
@@ -580,10 +594,11 @@ bool jog_session() {
   }
 
   if (tk::prompt_yes_no("Bezel motor plynule, bez tikani a preskakovani?")) {
-    tk::pass("motor %u jede plynule pri %d krocich/s, IRUN=%d, %u mikrokroku",
-             j.motor, j.rate, j.irun, j.usteps);
+    tk::pass("motor %u jede plynule pri %d krocich/s, %u mA RMS, %u mikrokroku",
+             j.motor, j.rate, tk::ma_from_cs(static_cast<uint8_t>(j.irun)),
+             j.usteps);
   } else {
-    tk::fail("motor %u nejede plynule - zkus nizsi rychlost, vetsi IRUN nebo "
+    tk::fail("motor %u nejede plynule - zkus nizsi rychlost, vyssi proud nebo "
              "vic mikrokroku",
              j.motor);
   }

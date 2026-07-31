@@ -1,5 +1,6 @@
 #include "testkit.h"
 
+#include <math.h>
 #include <stdarg.h>
 
 namespace tk {
@@ -8,6 +9,13 @@ namespace {
 
 uint16_t g_pass = 0;
 uint16_t g_fail = 0;
+
+// Rsense overeno primo na desce (dva SMD rezistory "R11", po jednom na fazi).
+// V_fs pro vsense=0 - jiny rozsah se v testing_firmware nepouziva, viz
+// TMC2209_CURRENT.md (HW-00179).
+constexpr float TMC_R_SENSE_OHM = 0.11f;
+constexpr float TMC_V_FS = 0.325f;
+constexpr float TMC_SQRT2 = 1.41421356f;
 
 void vprint(const char* tag, const char* fmt, va_list ap) {
   char buf[256];
@@ -86,6 +94,22 @@ void summary() {
 }
 
 uint16_t fail_count() { return g_fail; }
+
+uint8_t cs_from_ma(uint16_t ma) {
+  const float cs = (static_cast<float>(ma) / 1000.0f) * TMC_SQRT2 * 32.0f *
+                        (TMC_R_SENSE_OHM + 0.02f) / TMC_V_FS -
+                    1.0f;
+  long v = lroundf(cs);
+  if (v < 0) v = 0;
+  if (v > 31) v = 31;
+  return static_cast<uint8_t>(v);
+}
+
+uint16_t ma_from_cs(uint8_t cs) {
+  const float ma = (static_cast<float>(cs) + 1.0f) / 32.0f * TMC_V_FS /
+                    (TMC_R_SENSE_OHM + 0.02f) / TMC_SQRT2 * 1000.0f;
+  return static_cast<uint16_t>(lroundf(ma));
+}
 
 void flush_input() {
   while (Serial.available()) {

@@ -83,6 +83,13 @@ enum : uint8_t {
 };
 static constexpr uint8_t TMC2209_VERSION = 0x21;  // IOIN[31:24]
 
+// Prevod proudu <-> CS (Current Scale, 0-31 v IHOLD_IRUN). Pocita jen s
+// vsense=0 (V_fs=0,325 V) - CHOPCONF se nikde nemeni, rozsah CS 0-31 tak
+// pokryva ~55-1768 mA RMS. Rsense = 0,11 ohm, overeno primo na desce (dva
+// SMD rezistory oznacene "R11", po jednom na kazdou fazi).
+uint8_t cs_from_ma(uint16_t ma);
+uint16_t ma_from_cs(uint8_t cs);
+
 class TmcBus {
  public:
   void begin(uint32_t baud = 115200);

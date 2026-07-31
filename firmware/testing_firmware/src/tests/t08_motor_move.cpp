@@ -47,7 +47,10 @@ void t08_motor_move() {
   const int m = tk::read_int("ktery motor", 0, 3, 3);
   const int steps = tk::read_int("pocet kroku", 1, 100000, 400);
   const int rate = tk::read_int("kroku za sekundu", 10, 20000, 800);
-  const int irun = tk::read_int("proud IRUN (0-31, vetsi = silnejsi)", 0, 31, 8);
+  const int ma = tk::read_int("proud pri jizde [mA RMS]", 55, 1768, 500);
+  const uint8_t irun = tk::cs_from_ma(static_cast<uint16_t>(ma));
+  tk::info("%d mA -> CS=%u (skutecne %u mA RMS)", ma, irun,
+           tk::ma_from_cs(irun));
 
   const uint8_t node = TMC_ADDR[m];
   const uint32_t period_us = 1000000UL / static_cast<uint32_t>(rate);
@@ -88,8 +91,8 @@ void t08_motor_move() {
     tk::fail("IFCNT nelze precist - zapisy pravdepodobne neprosly");
   }
 
-  tk::warn("motor %d se za chvili roztoci: %d kroku, %d kr/s, IRUN=%d", m,
-           steps, rate, irun);
+  tk::warn("motor %d se za chvili roztoci: %d kroku, %d kr/s, %d mA", m,
+           steps, rate, ma);
   if (!tk::prompt_yes_no("Je mechanika volna?")) {
     tk::warn("zruseno operatorem");
     tk::summary();
@@ -136,7 +139,7 @@ void t08_motor_move() {
   if (tk::prompt_yes_no("Otacel se motor %d obema smery?", m)) {
     tk::pass("motor %d se toci", m);
   } else {
-    tk::fail("motor %d se netoci - zkontroluj 24 V, faze A+/A-/B+/B- a IRUN",
+    tk::fail("motor %d se netoci - zkontroluj 24 V, faze A+/A-/B+/B- a proud",
              m);
   }
 
