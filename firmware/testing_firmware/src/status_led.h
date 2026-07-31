@@ -1,7 +1,7 @@
 // Neblokujici "heartbeat" LED na IO38 (J4, "volny pin" v board_pins.h).
 //
 // Zavolej jednou ze setup(). Dal uz blika sama na pozadi (esp_timer
-// periodicky prerusuje nezavisle na loop()), 300 ms rozsviceno / 300 ms
+// periodicky prerusuje nezavisle na loop()), 80 ms rozsviceno / 80 ms
 // zhasnuto, po celou dobu behu firmwaru - i kdyz zrovna nejaky test ceka
 // v delay() na klavesu.
 //
