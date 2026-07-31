@@ -6,7 +6,7 @@
 
 namespace {
 
-constexpr uint32_t kPeriodMs = 300;
+constexpr uint32_t kPeriodMs = 80;
 
 Ticker ticker;
 bool paused = false;
