@@ -83,6 +83,19 @@ void t08_motor_move() {
                 ihold | (static_cast<uint32_t>(irun) << 8) | (6UL << 16));
   bus.write_reg(node, tk::TMC_TPOWERDOWN, 20);
 
+  // CHOPCONF.MRES je v resetu 0 (256 mikrokroku na krok). mstep_reg_select
+  // uz je 1 (viz GCONF vyse), takze mikrokrok bere driver z tohohle registru,
+  // ne z MS1/MS2 - a step_burst() pocita s PLNYMI kroky. Bez teto opravy je
+  // "steps" pulzu na STEP jen steps/256 skutecnych kroku motoru -
+  // prakticky neznatelne "nehybe se". MRES=8 -> 1 mikrokrok = 1 plny krok;
+  // intpol dovoluje driveru si to interne interpolovat na hladsi chod.
+  uint32_t chopconf = 0;
+  bus.read_reg(node, tk::TMC_CHOPCONF, &chopconf);
+  chopconf &= ~(0xFUL << 24);  // MRES pryc
+  chopconf |= (8UL << 24);     // MRES=8 -> plny krok
+  chopconf |= (1UL << 28);     // intpol
+  bus.write_reg(node, tk::TMC_CHOPCONF, chopconf);
+
   uint32_t ifcnt = 0;
   if (bus.read_reg(node, tk::TMC_IFCNT, &ifcnt)) {
     tk::pass("driver prijal zapisy, IFCNT=%lu",
